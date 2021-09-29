@@ -1,0 +1,12 @@
+#!/bin/sh
+# A simple mount menu using fzy and udevil
+
+[ -n "$(command -v fzy)" ] || printf "fzy is a dependency!"
+[ -n "$(command -v udevil)" ] || printf "udevil is a dependency!"
+[ -n "$(command -v tput)" ] || printf "tput is a dependency!"
+
+LINES="$(expr $(tput lines) - 2)"
+PROMPT="Select block device:\n"
+
+REMOTEPROMPT="[mount remote]"
+UMOUNTPROMPT="[unmount]"

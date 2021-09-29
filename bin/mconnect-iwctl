@@ -1,0 +1,28 @@
+#!/bin/sh
+# A simple wifi menu using fzy, sed and iwctl.
+
+# TODO port to iw
+[ -n "$(command -v fzy)" ] || printf "fzy is a dependency!"
+[ -n "$(command -v sed)" ] || printf "sed is a dependency!"
+[ -n "$(command -v iwctl)" ] || printf "iwctl is a dependency!"
+[ -n "$(command -v tput)" ] || printf "tput is a dependency!"
+
+LINES="$(expr $(tput lines) - 2)"
+STATION="wlan0"
+PROMPT="Select network:\n"
+
+# get list
+iwctl station $STATION scan
+list=$(iwctl station wlan0 get-networks | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" | tail +5 | tr -s " " | cut -d " " -f2,3)
+
+# prompt and get selection
+printf "$PROMPT"
+sel=$(printf "$list" | fzy -l $LINES | cut -d" " -f1)
+
+# action
+if [ -n "$sel" ]
+then
+  [ "$sel" = ">" ] && iwctl station $STATION disconnect
+  [ "$sel" != ">" ] && iwctl station $STATION connect $sel
+  [ $? -eq 0 ] || $0
+fi
