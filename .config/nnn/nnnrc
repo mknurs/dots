@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export NNN_OPTS=xUdHEA
+export NNN_BMS="b:$HOME:d:$HOME/docs;m:/media"
+export NNN_PLUG="v:imgview"
+export NNN_COLORS="#09090909"
+export NNN_FCOLORS="0000090a00000000000000"
