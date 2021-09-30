@@ -150,8 +150,6 @@ client.focused_inactive #333333 #333333 #e5e5e5 #333333 #333333
 client.unfocused #333333 #333333 #e5e5e5 #333333 #333333
 client.urgent #ff5533 #ff5533 #333333 #ff5533 #ff5533
 
-titlebar_padding 2
-
 # font
 font DejaVu Sans Mono 10
 
@@ -164,9 +162,6 @@ output "*" bg ~/pic/wallpaper.png fill
 bar {
   position top
   status_command while ~/bin/mecho-status; do sleep 1; done
-  status_edge_padding 0
-  status_padding 0
-  tray_padding 0
 
 	pango_markup enabled
 
