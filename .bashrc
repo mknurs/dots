@@ -7,22 +7,22 @@ case $- in
 esac
 
 # vim
-if command -v vim > /dev/null 2>&1;
+if [ -n $(command -v vim) ]
 then
-  export VIMDIR='$HOME/.config/vim'
+  export MYVIMRUNTIME='$HOME/.config/vim'
   export MYVIMRC='$HOME/.config/vim/vimrc'
   export VIMINIT='source $MYVIMRC'
   export EDITOR=vim
 fi
 
 # nnn
-if command -v nnn > /dev/null 2>&1 && [ -f "$HOME/.config/nnn/nnnrc" ];
+if [ -n $(command -v nnn) ] && [ -f "$HOME/.config/nnn/nnnrc" ]
 then
  . "$HOME/.config/nnn/nnnrc"
 fi
 
-# PATH
-export PATH=$PATH:$HOME/.local/bin
+# path
+export PATH=$PATH:$HOME/bin
 
 # xdg
 export XDG_CONFIG_HOME=$HOME/.config
@@ -61,9 +61,9 @@ alias ls='ls -lah --color=auto'
 alias src='exec "$BASH"'
 
 # pacman
-if command -v pacman > /dev/null 2>&1;
+if [ -n $(command -v pacman) ]
 then
-  if command -v doas > /dev/null 2>&1;
+  if [ -n command -v doas ]
   then
     alias pacu='doas pacman -Syyu --needed'
     alias pacr='doas pacman -Rcns'
@@ -81,6 +81,5 @@ fi
 # repo
 alias cfg='/usr/bin/git --git-dir=/home/mkn/.cfg/ --work-tree=/home/mkn/'
 
-alias gitb='/usr/bin/git --git-dir=/home/mkn/.cfg/dots-base/ --work-tree=/home/mkn'
-alias gitx='/usr/bin/git --git-dir=/home/mkn/.cfg/dots-x230/ --work-tree=/home/mkn'
-alias gitm='/usr/bin/git --git-dir=/home/mkn/.cfg/m-scripts/ --work-tree=/home/mkn'
+# TODO: somekind of self documentation for when the system is not yet fully setup.
+# [ -n "$(command -v fzy)" ] || printf "Some usefull scripts might be missing. Check the README.\n"
