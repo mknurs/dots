@@ -38,14 +38,18 @@ shopt -s checkwinsize
 # COLORS
 bold="\[\e[1m\]"
 f01="\[\e[31m\]"
+f02="\[\e[32m\]"
 f03="\[\e[33m\]"
+f04="\[\e[34m\]"
 esc="\[\e[0m\]"
 
 # PROMPT
-PS1="${bold}${f03}[\u@\h \W]\$${esc} "
-
-# ROOT PROMPT
-# PS1="${bold}${f01}[\u@\h \W]#${esc} "
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
+then
+  PS1="${bold}${f04}[\u@\h \W]\$${esc} "
+else
+  PS1="${bold}${f02}[\u@\h \W]\$${esc} "
+fi
 
 case ${TERM} in
   alacritty)
@@ -86,6 +90,13 @@ fi
 alias cfg='/usr/bin/git --git-dir=/home/mkn/.cfg/ --work-tree=/home/mkn/'
 alias cadd='cfg add'
 alias ccom='cfg commit'
+
+# git
+if [ -n $(command -v git) ]
+then
+  alias ga='git add'
+  alias gc='git commit'
+fi
 
 # TODO: somekind of self documentation for when the system is not yet fully setup.
 # [ -n "$(command -v fzy)" ] || printf "Some usefull scripts might be missing. Check the README.\n"
