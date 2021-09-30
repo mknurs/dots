@@ -78,8 +78,14 @@ then
   alias pace='pacman -Qqe'
 fi
 
+[ -n $(command -v vim) ] && alias v='vim'
+[ -n $(command -v nnn) ] && alias n='nnn'
+[ -n $(command -v tmux) ] && alias t='tmux'
+
 # repo
 alias cfg='/usr/bin/git --git-dir=/home/mkn/.cfg/ --work-tree=/home/mkn/'
+alias cadd='cfg add'
+alias ccom='cfg commit'
 
 # TODO: somekind of self documentation for when the system is not yet fully setup.
 # [ -n "$(command -v fzy)" ] || printf "Some usefull scripts might be missing. Check the README.\n"
