@@ -485,6 +485,7 @@ battery levels and auto-hibernating.
 
 - [systemd user services directory](.config/systemd/user)
 - [mlow_bat script](.local/bin/mlow_bat)
+this is now better
 
 **enable and start `low_bat.timer`:**
 ```
@@ -529,6 +530,7 @@ nginx ...)
 TODO: add usage and documentation for scripts
 TODO: add hints
 TODO: update base packages (opendoas)
+TODO: pacman hook
 
 Nginx
 
