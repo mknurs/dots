@@ -32,20 +32,16 @@ input "type:touchpad" {
 ########################################################################
 # reload configuration
 bindsym $mod+f10 reload
-
 # kill
 bindsym $mod+q kill
-
 # split direction
 bindsym $mod+minus splitt
-
 # new window
 bindsym $mod+Return exec $term
 bindsym $mod+w exec $browser
 bindsym $mod+e exec $explorer
 bindsym $mod+r exec $editor
 bindsym $mod+t exec $term
-
 # move focus
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
@@ -55,7 +51,8 @@ bindsym $mod+$up focus up
 bindsym $mod+$down focus down
 bindsym $mod+$left focus left
 bindsym $mod+$right focus right
-
+bindsym $mod+Next focus next
+bindsym $mod+Prior focus prev
 # move window
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Down move down
@@ -65,7 +62,6 @@ bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$right move right
-
 # resize mode
 mode "resize" {
   bindsym $mod+up resize shrink height 10px
@@ -79,7 +75,6 @@ mode "resize" {
   bindsym $mod+g mode "default"
 }
 bindsym $mod+g mode "resize"
-
 # switch workspaces
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
@@ -91,7 +86,8 @@ bindsym $mod+7 workspace number 7
 bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
-
+bindsym $mod+Shift+Next workspace next
+bindsym $mod+Shift+Prior workspace prev
 # move window to workspace
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
@@ -149,9 +145,9 @@ bindsym $mod+x exec $term --class=menu -e ~/bin/mconnect-iwctl
 ########################################################################
 # border
 default_border pixel 1
-client.focused #eeeeee #eeeeee #333333 #ff5533 #eeeeee
-client.focused_inactive #333333 #333333 #eeeeee #333333 #333333
-client.unfocused #333333 #333333 #eeeeee #333333 #333333
+client.focused #e5e5e5 #e5e5e5 #333333 #ff5533 #e5e5e5
+client.focused_inactive #333333 #333333 #e5e5e5 #333333 #333333
+client.unfocused #333333 #333333 #e5e5e5 #333333 #333333
 client.urgent #ff5533 #ff5533 #333333 #ff5533 #ff5533
 
 titlebar_padding 2
@@ -175,11 +171,11 @@ bar {
 	pango_markup enabled
 
   colors {
-    statusline #eeeeee
+    statusline #e5e5e5
     background #333333
-		focused_workspace #eeeeee #eeeeee #333333
-    inactive_workspace #333333 #333333 #eeeeee
-		urgent_workspace #ff5533 #ff5533 #eeeeee
+		focused_workspace #e5e5e5 #e5e5e5 #333333
+    inactive_workspace #333333 #333333 #e5e5e5
+		urgent_workspace #ff5533 #ff5533 #e5e5e5
   }
 }
 
