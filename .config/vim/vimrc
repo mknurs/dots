@@ -106,6 +106,9 @@ set splitbelow
 " remap <C-w> to conditionally split or switch buffer
 noremap <silent> <expr> <C-w> winnr('$') == 1 ? '<Esc>:vnew<cr>' : '<C-w><C-w>'
 
+" remap gf to open <cfile> in new split
+noremap gf :vs <cfile>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " yanking, pasting, clipboard
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
