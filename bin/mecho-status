@@ -4,7 +4,7 @@
 percent="$(cat /sys/class/power_supply/BAT0/capacity)"
 if [ $percent -lt '15' ];
 then
-	battery="<span color='#ff5533'>$percent%</span>"
+	battery="<span color='#ff5533'>$percent%%</span>"
 else
 	battery="$percent%%"
 fi
