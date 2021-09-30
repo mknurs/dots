@@ -1,60 +1,37 @@
 " disable strange defaults
-if &compatible | set nocompatible | endif
+if &compatible
+  set nocompatible
+endif
+let skip_defaults_vim=1
+
+" runtimepath
+let myvimruntime = expand($MYVIMRUNTIME)
+set rtp-=$HOME/.vim
+"let &rtp=myvimruntime
+let &rtp=myvimruntime . ',' . $VIMRUNTIME
+
+" viminfo
+set viminfo=
 
 " set mapleader to space
 nnoremap <SPACE> <Nop>
 let mapleader = "\<Space>"
 
 " colorscheme
-colorscheme ron
-
-" don't parse modelines
-set nomodeline
+colorscheme mknurs
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " terminal
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" terminal colors
-set t_Co=16
-
 " fast terminal connection
 set ttyfast
-
 " force utf-8 encoding
 set encoding=utf-8
-
 " set window title by default
 set title
-
-" alacritty dumb fix
-map <ESC>[1;5A <C-Up>
-map <ESC>[1;5B <C-Down>
-map <ESC>[1;5C <C-Right>
-map <ESC>[1;5D <C-Left>
-imap <ESC>[1;5A <C-Up>
-imap <ESC>[1;5B <C-Down>
-imap <ESC>[1;5C <C-Right>
-imap <ESC>[1;5D <C-Left>
-map <ESC>[1;3A <A-Up>
-map <ESC>[1;3B <A-Down>
-map <ESC>[1;3C <A-Right>
-map <ESC>[1;3D <A-Left>
-imap <ESC>[1;3A <A-Up>
-imap <ESC>[1;3B <A-Down>
-imap <ESC>[1;3C <A-Right>
-imap <ESC>[1;3D <A-Left>
-map <ESC>[1;2A <S-Up>
-map <ESC>[1;2B <S-Down>
-map <ESC>[1;2C <S-Right>
-map <ESC>[1;2D <S-Left>
-imap <ESC>[1;2A <S-Up>
-imap <ESC>[1;2B <S-Down>
-imap <ESC>[1;2C <S-Right>
-imap <ESC>[1;2D <S-Left>
-
 " fix timeoutlens when escaping insert mode
-:autocmd InsertEnter * set timeoutlen=0
-:autocmd InsertLeave * set timeoutlen=1000
+autocmd InsertEnter * set timeoutlen=0
+autocmd InsertLeave * set timeoutlen=1000
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cursor
@@ -99,18 +76,11 @@ set statusline=%f\ %h%m%r\ %{WordCount()}%=%l,%c%V\ %P
 " 5 columns next to the cursor when scrolling horizontally
 set scrolloff=8
 set sidescrolloff=5
-
-" highlight line under cursor
-set cursorline
-set cursorlineopt=number
-
 " show line numbers on the sidebar
 set number
 set relativenumber
-
 " color 72th column
 set colorcolumn=72
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " search
@@ -134,68 +104,38 @@ set splitright
 set splitbelow
 
 " remap <C-w> to conditionally split or switch buffer
-noremap <silent> <expr> <C-w> winnr('$') == 1 ? '<Esc>:vs .<cr>' : '<C-w><C-w>'
+noremap <silent> <expr> <C-w> winnr('$') == 1 ? '<Esc>:vnew<cr>' : '<C-w><C-w>'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " yanking, pasting, clipboard
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " wayland support
-augroup wayland_clipboard
-  au!
-  au TextYankPost * call system("wl-copy", @")
-augroup END
-nnoremap p :let @"=system("wl-paste -n")<CR>:put "=<CR>
+if $XDG_SESSION_TYPE == "wayland"
+  augroup wayland_clipboard
+    au!
+    au TextYankPost * if v:event.visual | call system("wl-copy", @") | endif
+  augroup END
+  nnoremap p :let @"=system("wl-paste -n")<CR>:put "=<CR>
+endif
 
-" Y yanks from the cursor to the end of line
-nnoremap Y y$
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " markdown
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType markdown setlocal textwidth=72
 autocmd FileType markdown setlocal nojoinspaces
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" undo, swap, read
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set dir and add it to runtimepath
-let dir = expand($VIMDIR)
-exe 'set rtp+=' . dir
-
-" set swap, undo and backup dirs
-let &directory = dir . '/swap/'
-let &undodir = dir . '/undo/'
-let &backupdir = dir . '/back/'
-
-" auto create dirs for backup and undo files
-if !isdirectory(&directory)
-  call system("mkdir -p " . &directory)
-endif
-if !isdirectory(&undodir)
-  call system("mkdir -p " . &undodir)
-endif
-if !isdirectory(&backupdir)
-  call system("mkdir -p " . &backupdir)
-endif
-
-" enable undofile
-set undofile
-
-" change viminfo location
-let &viminfofile = dir . '/viminfo'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug
-let vimplug = dir . '/autoload/plug.vim'
+let vimplug = myvimruntime . '/autoload/plug.vim'
 if empty(glob(vimplug))
   silent execute '!curl -fLo ' . vimplug . ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-let plugged = dir . '/plugged/'
-"" plugins
+let plugged = myvimruntime . '/plugged/'
+" plugins
 call plug#begin(plugged)
   Plug 'sheerun/vim-polyglot'
 call plug#end()
