@@ -63,7 +63,7 @@ alias src='exec "$BASH"'
 # pacman
 if [ -n $(command -v pacman) ]
 then
-  if [ -n command -v doas ]
+  if [ -n $(command -v doas) ]
   then
     alias pacu='doas pacman -Syyu --needed'
     alias pacr='doas pacman -Rcns'
