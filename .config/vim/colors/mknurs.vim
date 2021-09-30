@@ -72,7 +72,7 @@ highlight DiffDelete term=NONE cterm=NONE ctermfg=bg ctermbg=1
 " DiffText: diff mode: Changed text within a changed line |diff.txt|
 highlight DiffText term=bold cterm=bold ctermfg=NONE ctermbg=NONE
 " VertSplit: the column separating vertically split windows
-highlight VertSplit term=NONE cterm=NONE ctermfg=bg ctermbg=fg
+highlight VertSplit term=bold cterm=bold ctermfg=2 ctermbg=NONE
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Msg
@@ -112,7 +112,7 @@ highlight SignColumn term=NONE cterm=NONE ctermfg=9 ctermbg=NONE
 " Matching parenthesis
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MatchParen: The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
-highlight MatchParen term=reverse cterm=reverse ctermfg=NONE ctermbg=fg
+highlight MatchParen term=underline cterm=underline ctermfg=NONE ctermbg=NONE
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Popup menu
