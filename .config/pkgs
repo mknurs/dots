@@ -20,6 +20,7 @@ foomatic-db-ppds
 fzy
 gcc
 git
+gnu-free-fonts
 groff
 gutenprint
 htop
@@ -36,7 +37,7 @@ linux-firmware
 m4
 make
 man-db
-nginx
+nginx-mainline
 nnn
 nodejs
 npm
@@ -68,8 +69,11 @@ tlp
 tmux
 ttf-liberation
 udevil
+ufw
 unzip
 vim
+wget
 which
 wl-clipboard
+xdg-user-dirs
 zip
