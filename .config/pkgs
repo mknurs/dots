@@ -58,6 +58,7 @@ pipewire-alsa
 pipewire-pulse
 pkgconf
 sane-airscan
+shellcheck
 sshfs
 sudo
 sway
