@@ -1,18 +1,24 @@
 # Arch (sway) dotfiles
 
-This repo contains the tracked dotfiles and keeps a list of
-packages and configuration steps to reproduce my current
-setup on a Thinkpad x230.
+This repo contains the tracked dotfiles and keeps a list of packages and
+configuration steps to reproduce my current setup on a Thinkpad x230.
 
-This README somewhat follows the structure of the ArchWiki
+The first part of this readme – numbered commands, from **(1)** to
+**(19.1)** – somewhat follows the structure of the ArchWiki
 (Installation
-guide)[https://wiki.archlinux.org/title/installation_guide].
-Post-installations steps are also documented here.
+guide)[https://wiki.archlinux.org/title/installation_guide]. The second
+part, or the rest, documents the post-installation steps that we've
+taken and want to retake.
 
-Instructions and commands are in no way agnostic. Do not
-copy without adapting the commands to your system and
+Booting from a live USB copy of Arch Linux with a connection to the
+internet, a local copy of this readme can be downloaded with `wget`:
+```
+# wget https://raw.githubusercontent.com/mknurs/dots/master/README.md
+```
+
+Instructions and commands are in no way hardware or distribution
+agnostic. Do not copy without adapting the commands to your system and
 preferences.
-
 
 ## Pre-installation
 
@@ -59,18 +65,15 @@ preferences.
 # lsblk
 ```
 
-**(4.1) partition the drive (usually `/dev/sda`) with
-`fdisk`:**
+**(4.1) partition the drive (usually `/dev/sda`) with `fdisk`:**
 ```
 # fdisk /dev/sda
 ```
 
-Refer to:
 - [Partitioning#Example layouts](https://wiki.archlinux.org/title/Partitioning#Example_layouts)
 - [Fdisk#Create_a_partition_table_and_partitions](https://wiki.archlinux.org/title/Fdisk#Create_a_partition_table_and_partitions)
 
-Personal (usual) setup (UEFI with GPT and a separate `/home`
-partition):
+Personal (usual) setup (UEFI with GPT and a separate `/home` partition):
 
 mount point | partition   | partition type    | size
 ------------|-------------|-------------------|-------------------
@@ -81,7 +84,7 @@ mount point | partition   | partition type    | size
 
 ### Format the partitions
 
-**(5) format the `boot` partition to fat32:**
+**(5) format the `boot` partition to `fat32`:**
 ```
 # mkfs.vfat -n boot /dev/sda1
 ```
@@ -91,7 +94,7 @@ mount point | partition   | partition type    | size
 # mkswap -L swap /dev/sda2
 ```
 
-**(5.2) format the `home` and `root` partitions to ext4:**
+**(5.2) format the `home` and `root` partitions to `ext4`:**
 ```
 # mkfs.ext4 -L arch /dev/sda3
 # mkfs.ext4 -L home /dev/sda4
@@ -157,8 +160,7 @@ mount point | partition   | partition type    | size
 
 ### Localization
 
-**(11) edit `/etc/locale.gen` and uncomment needed
-locales:**
+**(11) edit `/etc/locale.gen` and uncomment needed locales:**
 ```
 # sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
 # sed -i 's/^#sl_SI.UTF-8/sl_SI.UTF-8/g' /etc/locale.gen
@@ -273,10 +275,12 @@ options root=UUID=<UUID> rw resume=UUID=<UUID>
 ```
 # exit
 ```
+
 **(19.1) unmount /mnt:**
 ```
 # umount -R /mnt
 ```
+
 **(19.2) reboot:**
 ```
 # reboot
@@ -284,10 +288,10 @@ options root=UUID=<UUID> rw resume=UUID=<UUID>
 
 ## Post-installation configuration
 
-At this point the base Arch install is done. The rest of
-this document contains some post-installation guides and
-documents the necessary configuration steps to reproduce my
-work environment and workflow configuration.
+At this point the base Arch install is done. The rest of this document
+contains some post-installation guides and documents the necessary
+configuration steps to reproduce my work environment and workflow
+configuration.
 
 ### Base-devel
 
@@ -337,11 +341,10 @@ $ iwctl station wlan0 connect <SSID>
 
 ### Dotfiles version control
 
-Refer to:
 - [The best way to store your dotfiles](https://www.atlassian.com/git/tutorials/dotfiles)
+- [How do I clone only a subdirectory of a Git repository?](https://stackoverflow.com/a/13738951)
 
-
-**install git:**
+**install `git`:**
 ```
 $ doas pacman -S git
 ```
@@ -366,13 +369,14 @@ $ alias cfg='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 $ cfg checkout
 ```
 
-Note that this might fail because of existing files. Backup
-and remove the conflicting files and run the command again.
+Note that this might fail because of existing files. Backup and remove
+the conflicting files and run the command again.
 
 **set the `showUntrackedFiles` flag to `no`:**
 ```
 $ cfg config --local status.showUntrackedFiles no
 ```
+
 
 ### Pacman
 
@@ -494,7 +498,7 @@ $ systemctl --user start low_bat.timer
 ```
 
 ### Kernel
-  
+
 **add the `i915` module to kernel:**
 
 Example (partial) of `/etc/mkinitcpio.conf`:
@@ -514,33 +518,16 @@ COMPRESSION=lz4
 $ doas mkinitcpio -p linux
 ```
 
-### Issue
-
-Example of `/etc/issue`:
-
-```
- \e[1;94m  /\\  \e[0m Welcome to \n on \l.
- \e[1;94m /  \\ \e[0m Running \s \r.
- \e[1;94m/    \\\e[0m Today is \d \t.
-
-```
-
 TODO: add usage for basic operations (mounting, commiting,
 nginx ...)
 TODO: add usage and documentation for scripts
 TODO: add hints
-TODO: update base packages (opendoas)
 TODO: pacman hook
 
 Nginx
 
 link server conf to sites-enabled
 link server folder to /usr/share/nginx
-
-### web dev
-gpasswd -a http mkn
-chmod g+x /mkn (maybe also kkurs.git ...)
-
 
 ### Packages
 
@@ -610,6 +597,13 @@ vim
 nnn
 ```
 
+#### Terminal utilities
+
+```
+fzy
+jq
+```
+
 #### Archive
 
 ```
@@ -630,7 +624,12 @@ ntfs-3g
 
 ```
 sway
-xorg-xwayland
+```
+
+#### Wayland utilities
+
+```
+wl-clipboard
 ```
 
 #### Audio
@@ -659,12 +658,29 @@ inkscape
 #### Web development
 
 ```
-nginx
+nginx-mainline
 php7
 php7-fpm
 php7-gd
+php7-intl
 nodejs
 npm
+deno
+```
+
+Setting up a webdev environment is documented in a private repo
+((wwws)[https://github.com/mknurs/wwws]).
+
+#### Firewall
+
+```
+ufw
+```
+
+We also allow incoming from the local network:
+
+```
+$ doas ufw allow from 192.168.64.0/24 port 8080
 ```
 
 #### Writing and editing
