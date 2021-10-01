@@ -15,11 +15,6 @@ then
   export EDITOR=vim
 fi
 
-# nnn
-if [ -n $(command -v nnn) ] && [ -f "$HOME/.config/nnn/nnnrc" ]
-then
- . "$HOME/.config/nnn/nnnrc"
-fi
 
 # path
 export PATH=$PATH:$HOME/bin
@@ -71,9 +66,11 @@ then
   then
     alias pacu='doas pacman -Syyu --needed'
     alias pacr='doas pacman -Rcns'
+    alias pacc='doas pacman -Scc'
   else
     alias pacu='sudo pacman -Syyu --needed'
     alias pacr='sudo pacman -Rcns'
+    alias pacc='sudo pacman -Scc'
   fi
   alias pacs='pacman -Ss'
   alias pacq='pacman -Qs'
@@ -100,3 +97,8 @@ fi
 
 # TODO: somekind of self documentation for when the system is not yet fully setup.
 # [ -n "$(command -v fzy)" ] || printf "Some usefull scripts might be missing. Check the README.\n"
+# nnn
+if [ -n $(command -v nnn) ] && [ -f "$HOME/.config/nnn/nnnrc" ]
+then
+ . "$HOME/.config/nnn/nnnrc"
+fi
