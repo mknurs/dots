@@ -518,16 +518,8 @@ COMPRESSION=lz4
 $ doas mkinitcpio -p linux
 ```
 
-TODO: add usage for basic operations (mounting, commiting,
-nginx ...)
-TODO: add usage and documentation for scripts
-TODO: add hints
-TODO: pacman hook
-
-Nginx
-
-link server conf to sites-enabled
-link server folder to /usr/share/nginx
+A copy of `mkinitcpio.conf` is manually tracked
+(here)[.config/etcs/mkinitcpio.conf], in this repo.
 
 ### Packages
 
@@ -677,12 +669,6 @@ Setting up a webdev environment is documented in a private repo
 ufw
 ```
 
-We also allow incoming from the local network:
-
-```
-$ doas ufw allow from 192.168.64.0/24 port 8080
-```
-
 #### Writing and editing
 
 ```
@@ -699,6 +685,7 @@ foomatic-db-gutenprint-ppds
 foomatic-db-nonfree-ppds
 foomatic-db-ppds
 sane-airscan
+ghostscript
 
 cups-xerox-b2xx (aur)
 ```
