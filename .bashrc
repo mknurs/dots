@@ -6,31 +6,10 @@ case $- in
       *) return;;
 esac
 
-# vim
-if [ -n $(command -v vim) ]
-then
-  export MYVIMRUNTIME='$HOME/.config/vim'
-  export MYVIMRC='$HOME/.config/vim/vimrc'
-  export VIMINIT='source $MYVIMRC'
-  export EDITOR=vim
-fi
-
-
-# path
-export PATH=$PATH:$HOME/bin
-
-# xdg
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_DATA_DIRS=/usr/local/share:/usr/share
-export XDG_CONFIG_DIRS=/etc/xdg
-
 # update window
 shopt -s checkwinsize
 
-# COLORS
+# colors
 bold="\[\e[1m\]"
 f01="\[\e[31m\]"
 f02="\[\e[32m\]"
@@ -38,19 +17,13 @@ f03="\[\e[33m\]"
 f04="\[\e[34m\]"
 esc="\[\e[0m\]"
 
-# PROMPT
+# prompt
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
 then
   PS1="${bold}${f04}[\u@\h \W]\$${esc} "
 else
   PS1="${bold}${f02}[\u@\h \W]\$${esc} "
 fi
-
-case ${TERM} in
-  alacritty)
-    PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
-    ;;
-esac
 
 ########################################################################
 # alias
@@ -84,21 +57,14 @@ fi
 [ -n $(command -v tmux) ] && alias t='tmux'
 
 # repo
-alias cfg='/usr/bin/git --git-dir=/home/mkn/.cfg/ --work-tree=/home/mkn/'
-alias cadd='cfg add'
-alias ccom='cfg commit'
+alias dot='/usr/bin/git --git-dir=/home/mkn/.dot/ --work-tree=/home/mkn/'
+alias dots='dot status'
+alias dota='dot add'
+alias dotc='dot commit'
 
 # git
 if [ -n $(command -v git) ]
 then
   alias ga='git add'
   alias gc='git commit'
-fi
-
-# TODO: somekind of self documentation for when the system is not yet fully setup.
-# [ -n "$(command -v fzy)" ] || printf "Some usefull scripts might be missing. Check the README.\n"
-# nnn
-if [ -n $(command -v nnn) ] && [ -f "$HOME/.config/nnn/nnnrc" ]
-then
- . "$HOME/.config/nnn/nnnrc"
 fi
