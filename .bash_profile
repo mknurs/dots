@@ -10,6 +10,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share"
 export XDG_CONFIG_DIRS="/etc/xdg"
+# git
+export DOT_GIT_DIR="$HOME/.dot"
+export DOT_WORK_TREE="$HOME"
 # vim
 export MYVIMRUNTIME="$HOME/.config/vim"
 export MYVIMRC="$HOME/.config/vim/vimrc"
