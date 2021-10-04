@@ -5,10 +5,9 @@
 
 hi clear
 set background=dark
-if exists("syntax_on")
-  syntax reset
-endif
-set t_Co=16
+" set t_Co=16
+" set notgc
+syntax reset
 let g:colors_name = "mknurs"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -156,11 +155,11 @@ highlight SpellRare term=underline cterm=underline ctermbg=NONE ctermbg=NONE
 " StatusLine: status line of current window
 highlight StatusLine term=NONE cterm=NONE ctermfg=bg ctermbg=2
 " StatusLineNC: status lines of not-current windows Note: if this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
-highlight StatusLineNC term=NONE cterm=NONE ctermfg=bg ctermbg=10
+highlight StatusLineNC term=NONE cterm=NONE ctermfg=bg ctermbg=8
 " StatusLineTerm: status line of current window, if it is a |terminal| window.
 highlight StatusLineTerm term=NONE cterm=NONE ctermfg=bg ctermbg=2
 " StatusLineTermNC: status lines of not-current windows that is a |terminal| window.
-highlight StatusLineTermNC term=NONE cterm=NONE ctermfg=bg ctermbg=10
+highlight StatusLineTermNC term=NONE cterm=NONE ctermfg=bg ctermbg=8
 " WildMenu: current match in 'wildmenu' completion
 highlight WildMenu term=bold cterm=bold ctermfg=bg ctermbg=2
 

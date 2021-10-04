@@ -1,6 +1,10 @@
+#
 # ~/.bash_profile
+#
 
 # environment
+# colors
+export HEX_BG="#333333"
 # path
 export PATH="${PATH}:$HOME/bin"
 # xdg
@@ -13,11 +17,11 @@ export XDG_CONFIG_DIRS="/etc/xdg"
 # git
 export DOT_GIT_DIR="$HOME/.dot"
 export DOT_WORK_TREE="$HOME"
-# vim
-export MYVIMRUNTIME="$HOME/.config/vim"
-export MYVIMRC="$HOME/.config/vim/vimrc"
-export VIMINIT="source $MYVIMRC"
-export EDITOR="vim"
+# nvim
+export EDITOR="nvim"
+export VISUAL="nvim"
+# firefox
+export BROWSER="firefox"
 # nnn
 export NNN_OPTS="xUdHEA"
 export NNN_BMS="b:$HOME;c:$XDG_CONFIG_HOME;d:$HOME/doc;m:/media;w:$HOME/www"
