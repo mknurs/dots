@@ -131,6 +131,7 @@ bindsym Print exec grim $(xdg-user-dir PICTURES)/screenshots/$(date +'%s_grim.pn
 # menu bindings
 ########################################################################
 for_window [app_id="^menu"] floating enable, sticky enable, resize set 30 ppt 30 ppt
+for_window [app_id="^l_menu"] floating enable, sticky enable, resize set 50 ppt 30 ppt
 # logout
 bindsym $mod+Escape exec $term --class=menu -e ~/bin/sway_logout.sh
 # window focus
@@ -138,7 +139,7 @@ bindsym $mod+Tab exec $term --class=menu -e ~/bin/sway_focus.sh
 # desktop launcher
 bindsym $mod+space exec $term --class=menu -e ~/bin/sway_launch.sh
 # wifi connect
-bindsym $mod+x exec $term --class=menu -e ~/bin/mconnect-iwctl
+bindsym $mod+x exec $term --class=menu -e ~/bin/sway_iwctl.sh
 # mount
 #bindsym $mod+y exec $term --class=mount -e ~/bin/mmount
 
