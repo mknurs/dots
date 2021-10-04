@@ -9,10 +9,10 @@ set $down j
 set $up k
 set $right l
 
-set $term alacritty --working-directory $PWD
+set $term alacritty --working-directory "$(sway_cwd.sh)"
 set $browser firefox
-set $explorer $term -e nnn
-set $editor $term -e vim
+set $explorer $term -e nnn "$(sway_cwd.sh)"
+set $editor $term -e nvim
 
 ########################################################################
 # keyboard, input
@@ -41,7 +41,7 @@ bindsym $mod+Return exec $term
 bindsym $mod+w exec $browser
 bindsym $mod+e exec $explorer
 bindsym $mod+r exec $editor
-bindsym $mod+t exec $term
+bindsym $mod+t exec alacritty
 # move focus
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
@@ -113,6 +113,8 @@ bindsym $mod+d layout toggle tabbed splitv splith
 bindsym $mod+f fullscreen
 # toggle floating
 bindsym $mod+Shift+f floating toggle
+# toggle focus floating
+bindsym $mod+Shift+a focus mode_toggle
 
 ########################################################################
 # laptop bindings
@@ -130,11 +132,11 @@ bindsym Print exec grim $(xdg-user-dir PICTURES)/screenshots/$(date +'%s_grim.pn
 ########################################################################
 for_window [app_id="^menu"] floating enable, sticky enable, resize set 30 ppt 30 ppt
 # logout
-bindsym $mod+Escape exec $term --class=menu -e ~/bin/mlogout-sway
+bindsym $mod+Escape exec $term --class=menu -e ~/bin/sway_logout.sh
 # window focus
-bindsym $mod+Tab exec $term --class=menu -e ~/bin/mfocus-sway
+bindsym $mod+Tab exec $term --class=menu -e ~/bin/sway_focus.sh
 # desktop launcher
-bindsym $mod+space exec $term --class=menu -e ~/bin/mexec-desktop
+bindsym $mod+space exec $term --class=menu -e ~/bin/sway_launch.sh
 # wifi connect
 bindsym $mod+x exec $term --class=menu -e ~/bin/mconnect-iwctl
 # mount
@@ -154,14 +156,14 @@ client.urgent #ff5533 #ff5533 #333333 #ff5533 #ff5533
 font DejaVu Sans Mono 10
 
 # wallpaper
-output "*" bg ~/pic/wallpaper.png fill
+output "*" bg ~/doc/wallpaper.png fill
 
 ########################################################################
 # status bar
 ########################################################################
 bar {
   position top
-  status_command while ~/bin/mecho-status; do sleep 1; done
+  status_command while ~/bin/swaybar_status.sh; do sleep 1; done
 
 	pango_markup enabled
 

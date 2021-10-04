@@ -1,10 +1,9 @@
-#!/bin/sh
+#
+# ~/.bashrc
+#
 
 # if not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+[[ $- != *i* ]] && return
 
 # update window
 shopt -s checkwinsize
@@ -52,7 +51,7 @@ then
   alias pace="pacman -Qqe"
 fi
 
-[ -n $(command -v vim) ] && alias v="vim"
+[ -n $(command -v nvim) ] && alias v="nvim"
 [ -n $(command -v nnn) ] && alias n="nnn"
 [ -n $(command -v tmux) ] && alias t="tmux"
 
