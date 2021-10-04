@@ -16,11 +16,22 @@ fi
 
 ORIGIN_ETC="/etc/"
 TRACKD_ETC="/home/mkn/.config/etcs/"
+FLAG=true
 for f in $(find ${TRACKD_ETC} -type f)
 do
   origin_f="${ORIGIN_ETC}${f#$TRACKD_ETC}"
   if [ "$(diff "${f}" "${origin_f}")" ]
   then
-    printf "Manually tracked \`%s\` seems different. You might want to update accordingly!\n" "${origin_f}"
+    printf "Manually tracked %s seems different. You might want to update accordingly!\n" "${origin_f}"
+    FLAG=false
+  else
+    printf "%s seems okay.\n" "${origin_f}"
   fi
 done
+
+if [ "$FLAG" ]
+then
+  printf "Done. All checks passed!\n"
+else
+  printf "Done. Some files need attention!\n"
+fi
