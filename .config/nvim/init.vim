@@ -22,7 +22,7 @@
 " 2 moving around, searching and patterns
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " whichwrap, ww: list of flags specifying which commands wrap to another line
-" set ww=b,s,<,>,[,]
+set ww=b,s,h,l,<,>,[,]
 " startofline, sol: many jump commands move the cursor to the first non-blank character of a line
 " set sol
 " paragraphs, para: nroff macro names that separate paragraphs
@@ -30,7 +30,6 @@
 " sections, sect: nroff macro names that separate sections
 " set sect=
 " path, pa: list of directory names used for file searching
-" (global or local to buffer)
 " set pa=
 " cdpath, cd: list of directory names used for :cd
 " set cd=
@@ -53,12 +52,10 @@ set scs
 " maxmempattern, mmp: maximum amount of memory in Kbyte used for pattern matching
 " set mmp=
 " define, def: pattern for a macro definition line
-" (global or local to buffer)
 " set def=
 " include, inc: pattern for an include-file line (local to buffer)
 " set inc=
 " includeexpr, inex: expression used to transform an include line to a file name
-" (local to buffer)
 " set inex=
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -69,10 +66,8 @@ set scs
 " taglength, tl: number of significant characters in a tag name or zero
 " set tl=
 " tags: list of file names to search for tags
-" (global or local to buffer)
 " set tag=
 " tagcase, tc: how to handle case when searching in tags files: "followic" to follow 'ignorecase', "ignore" or "match"
-" (global or local to buffer)
 " set tc=
 " tagrelative, tr: file names in a tags file are relative to the tags file
 " set tr
@@ -81,7 +76,6 @@ set scs
 " showfulltag, sft: when completing tags in Insert mode show more info
 " set nosft
 " tagfunc, tfu: a function to be used to perform tag searches
-" (local to buffer)
 " set tfu=
 " cscopeprg, csprg: command for executing cscope
 " set csprg=
@@ -102,21 +96,16 @@ set scs
 " 4 displaying text
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " scroll, scr: number of lines to scroll for CTRL-U and CTRL-D
-" (local to window)
 " set scr=
 " scrolloff, so: number of screen lines to show around the cursor
 set so=8
 " wrap: long lines wrap
-" (local to window)
 set nowrap
 " linebreak, lbr: wrap long lines at a character in 'breakat'
-" (local to window)
 " set nolbr
 " breakindent, bri: preserve indentation in wrapped text
-" (local to window)
 " set nobri
 " breakindentopt, briopt: adjust breakindent behaviour
-" (local to window)
 " set briopt=
 " breakat, brk: which characters might cause a line break
 " set brk=
@@ -144,27 +133,20 @@ set siso=5
 " msec
 " set rdt=
 " writedelay, wd: delay in msec for each char written to the display
-" (for debugging)
 " set wd=
 " list: show <Tab> as ^I and end-of-line as $
-" (local to window)
 " set nolist
 " listchars, lcs: list of strings used for list mode
 " set lcs=
 " number, nu: show the line number for each line
-" (local to window)
 set nu
 " relativenumber, rnu: show the relative line number for each line
-" (local to window)
 set rnu
 " numberwidth, nuw: number of columns to use for the line number
-" (local to window)
 " set nuw=
 " conceallevel: controls whether concealable text is hidden
-" (local to window)
 " set cole=
 " concealcursor: modes in which text in the cursor line can be concealed
-" (local to window)
 " set cocu=
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -173,46 +155,34 @@ set rnu
 " background, bg: "dark" or "light"; the background color brightness
 " set bg=
 " filetype, ft: type of file; triggers the FileType event when set
-" (local to buffer)
 " set ft=
 " syntax, syn: name of syntax highlighting used
-" (local to buffer)
 " set syn=
 " synmaxcol, smc: maximum column to look for syntax items
-" (local to buffer)
 " set smc=
 " highlight, hl: which highlighting to use for various occasions
 " set hl=
 " hlsearch, hls: highlight all matches for the last used search pattern
 " set nohls
 " wincolor, wcr: highlight group to use for the window
-" (local to window)
 " set wcr=
 " termguicolors, tgc: use GUI colors for the terminal
 " set notgc
 " cursorcolumn, cuc: highlight the screen column of the cursor
-" (local to window)
 " set nocuc
 " cursorline, cul: highlight the screen line of the cursor
-" (local to window)
 " set nocul
 " colorcolumn, cc: columns to highlight
-" (local to window)
 set cc=72
 " spell: highlight spelling mistakes
-" (local to window)
 " set nospell
 " spelllang, spl: list of accepted languages
-" (local to buffer)
 " set spl=en
 " spellfile, spf: file that "zg" adds good words to
-" (local to buffer)
 " set spf=
 " spellcapcheck, spc: pattern to locate the end of a sentence
-" (local to buffer)
 " set spc=
 " spelloptions, spo: flags to change how spell checking works
-" (local to buffer)
 " set spo=
 " spellsuggest, sps: methods used to suggest corrections
 " set sps=
@@ -248,10 +218,8 @@ set stl=%f\ %h%m%r\ %{WordCount()}%=%l,%c%V\ %P
 " winminheight, wmh: minimal number of lines used for any window
 " set wmh=
 " winfixheight, wfh: keep the height of the window
-" (local to window)
 " set nowfh
 " winfixwidth, wfw: keep the width of the window
-" (local to window)
 " set nowfw
 " winwidth, wiw: minimal number of columns used for the current window
 " set wiw=
@@ -262,7 +230,6 @@ set stl=%f\ %h%m%r\ %{WordCount()}%=%l,%c%V\ %P
 " previewheight, pvh: default height for the preview window
 " set pvh=
 " previewwindow, pvw: identifies the preview window
-" (local to window)
 " set nopvw
 " hidden, hid: don't unload a buffer when no longer shown in a window
 " set nohid
@@ -273,12 +240,10 @@ set sb
 " splitright, spr: a new window is put right of the current one
 set spr
 " scrollbind, scb: this window scrolls together with other bound windows
-" (local to window)
 " set noscb
 " scrollopt, sbo: "ver", "hor" and/or "jump"; list of options for 'scrollbind'
 " set sbo=
 " cursorbind, crb: this window's cursor moves together with other bound windows
-" (local to window)
 " set nocrb
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -389,7 +354,6 @@ set cb=unnamed,unnamedplus
 " 13 editing text
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " undolevels, ul: maximum number of changes that can be undone
-" (global or local to buffer)
 " set ul=
 " undofile, udf: automatically save and restore undo history
 " set noudf: udf
@@ -398,36 +362,26 @@ set cb=unnamed,unnamedplus
 " undoreload, ur: maximum number lines to save for undo on a buffer reload
 " set ur=
 " modified, mod: changes have been made and not written to a file
-" (local to buffer)
 " set mod
 " readonly, ro: buffer is not to be written
-" (local to buffer)
 " set noro
 " modifiable, ma: changes to the text are possible
-" (local to buffer)
 " set ma
 " textwidth, tw: line length above which to break a line
-" (local to buffer)
 set tw=72
 " wrapmargin, wm: margin from the right in which to break a line
-" (local to buffer)
 " set wm=
 " backspace, bs: specifies what <BS>, CTRL-W, etc. can do in Insert mode
 " set bs=
 " comments, com: definition of what comment lines look like
-" (local to buffer)
 " set com=
 " formatoptions, fo: list of flags that tell how automatic formatting works
-" (local to buffer)
-" set fo=
+set fo=croq
 " formatlistpat, flp: pattern to recognize a numbered list
-" (local to buffer)
 " set flp=
 " formatexpr, fex: expression used for "gq" to format lines
-" (local to buffer)
 " set fex=
 " complete, cpt: specifies how Insert mode completion works for CTRL-N and CTRL-P
-" (local to buffer)
 " set cpt=
 " completeopt, cot: whether to use a popup menu for Insert mode completion
 " set cot=
@@ -436,19 +390,14 @@ set tw=72
 " pumwidth, pw: minimum width of the popup menu
 " set pw=
 " completefunc, cfu: user defined function for Insert mode completion
-" (local to buffer)
 " set cfu=
 " omnifunc, ofu: function for filetype-specific Insert mode completion
-" (local to buffer)
 " set ofu=
 " dictionary, dict: list of dictionary files for keyword completion
-" (global or local to buffer)
 " set dict=
 " thesaurus, tsr: list of thesaurus files for keyword completion
-" (global or local to buffer)
 " set tsr=
 " infercase, inf: adjust case of a keyword completion match
-" (local to buffer)
 " set noinf
 " digraph, dg: enable entering digraphs with c1 <BS> c2
 " set nodg
@@ -461,71 +410,50 @@ set tw=72
 " matchtime, mat: tenth of a second to show a match for 'showmatch'
 " set mat=
 " matchpairs, mps: list of pairs that match for the "%" command
-" (local to buffer)
 " set mps=
 " joinspaces, js: use two spaces after '.' when joining a line
 set nojs
 " nrformats, nf: "alpha", "octal", "hex", "bin" and/or "unsigned"; number formats recognized for CTRL-A and CTRL-X commands
-" (local to buffer)
 " set nf=
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 14 tabs and indenting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tabstop, ts: number of spaces a <Tab> in the text stands for
-" (local to buffer)
 set ts=2
 " shiftwidth, sw: number of spaces used for each step of (auto)indent
-" (local to buffer)
 " set sw=
 " vartabstop, vts: list of number of spaces a tab counts for
-" (local to buffer)
 " set vts=
 " varsofttabstop, vsts: list of number of spaces a soft tabsstop counts for
-" (local to buffer)
 " set vsts=
 " smarttab, sta: a <Tab> in an indent inserts 'shiftwidth' spaces
 " set sta
 " softtabstop, sts: if non-zero, number of spaces to insert for a <Tab>
-" (local to buffer)
 " set sts=
 " shiftround, sr: round to 'shiftwidth' for "<<" and ">>"
 " set nosr: sr
 " expandtab, et: expand <Tab> to spaces in Insert mode
-" (local to buffer)
 set et
 " autoindent, ai: automatically set the indent of a new line
-" (local to buffer)
-" set ai
+set noai
 " smartindent, si: do clever autoindenting
-" (local to buffer)
 " set nosi
 " cindent, cin: enable specific indenting for C code
-" (local to buffer)
 " set nocin
 " cinoptions, cino: options for C-indenting
-" (local to buffer)
 " set cino=
 " cinkeys, cink: keys that trigger C-indenting in Insert mode
-" (local to buffer)
-" set cink=
-" cinwords, cinw: list of words that cause more C-indent
-" (local to buffer)
 " set cinw=
 " indentexpr, inde: expression used to obtain the indent of a line
-" (local to buffer)
 " set inde=
 " indentkeys, indk: keys that trigger indenting with 'indentexpr' in Insert mode
-" (local to buffer)
 " set indk=
 " copyindent, ci: copy whitespace for indenting from previous line
-" (local to buffer)
 " set noci
 " preserveindent, pi: preserve kind of whitespace when changing indent
-" (local to buffer)
 " set nopi
 " lisp: enable lisp mode
-" (local to buffer)
 " set nolisp
 " lispwords, lw: words that change how lisp indenting works
 " set lw=
@@ -796,7 +724,7 @@ set et
 " eventignore, ei: list of autocommand events which are to be ignored
 " set ei=
 " loadplugins, lpl: load plugin scripts when starting up
-" set lpl
+set nolpl
 " exrc, ex: enable reading .vimrc/.exrc/.gvimrc in the current directory
 " set noex
 " secure: safer working with script files in the current directory
@@ -842,8 +770,25 @@ endif
 
 call plug#begin()
   Plug 'sheerun/vim-polyglot'
+  Plug 'mcchrish/nnn.vim'
 call plug#end()
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" leader
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Space> <Nop>
+let mapleader=" "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" nnn.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>n :call nnn#pick(".", { "edit": "vs" })<CR>
+" Opens the nnn window in a split
+"let g:nnn#layout = "vnew"
+
+" Open nnn instead of netrw when opening a directory.
+let g:nnn#replace_netrw = 1
+" nnoremap <leader>n :NnnPicker %:p:h<CR>
+"let g:nnn#action
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " misc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
