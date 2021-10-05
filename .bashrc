@@ -5,6 +5,9 @@
 # if not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# auto vi mode
+set -o vi
+
 # update window
 shopt -s checkwinsize
 
