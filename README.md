@@ -5,8 +5,8 @@ configuration steps to reproduce my current setup on a Thinkpad x230.
 
 The first part of this readme – numbered commands, from **(1)** to
 **(19.1)** – somewhat follows the structure of the ArchWiki
-(Installation
-guide)[https://wiki.archlinux.org/title/installation_guide]. The second
+[Installation
+guide](https://wiki.archlinux.org/title/installation_guide). The second
 part, or the rest, documents the post-installation steps that we've
 taken and want to retake.
 
@@ -182,6 +182,8 @@ accordingly:**
 keyboard layout changes persistent:**
 ```
 # echo "KEYMAP=slovene" >> /etc/vconsole.conf
+# echo "FONT=lat2-16" >> /etc/vconsole.conf
+# echo "FONT_MAP=8859-2" >> /etc/vconsole.conf
 ```
 
 ### Network configuration
@@ -228,7 +230,7 @@ group:**
 
 **(16) install a text editor.**
 ```
-# pacman -S vim
+# pacman -S neovim
 ```
 
 ### Boot loader
@@ -259,8 +261,11 @@ title	Arch Linux
 linux /vmlinuz-linux
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
-options root=UUID=<UUID> rw resume=UUID=<UUID>
+options root=UUID=<UUID> rw resume=UUID=<UUID> vt.default_red=0x33,0xff,0x61,0xff,0x33,0xd4,0xb3,0xa7,0x77,0xff,0x95,0xff,0x6a,0xe6,0xd1,0xe5 vt.default_grn=0x33,0x55,0xff,0xf2,0x5c,0x8c,0xd7,0xa7,0x77,0x8b,0xff,0xf8,0x91,0xb7,0xe8,0xe5 vt.default_blu=0x33,0x33,0xb0,0xb1,0xff,0xb7,0xff,0xa7,0x77,0x6a,0xcf,0xd0,0xff,0xd4,0xff,0xe5
 ```
+
+This file is not tracked anywhere but here, inline. The long options
+line (after `vt.default_red`) defines the tty colors and is unnecessary.
 
 ### Networking software
 
@@ -301,6 +306,9 @@ configuration.
 ```
 
 ### Sudo and doas
+
+We keep `sudo` installed as it can be an unspecified dependency of AUR
+packages. Otherwise we use `doas` from the `opendoas` package.
 
 **edit sudo privileges:**
 ```
@@ -351,22 +359,22 @@ $ doas pacman -S git
 
 **clone the dotfiles repo into a bare repository:**
 ```
-$ git clone --bare https://github.com/mknurs/dots $HOME/.cfg
+$ git clone --bare https://github.com/mknurs/dots $HOME/.dot
 ```
 
 **add repository directory to `.gitignore`:**
 ```
-$ echo ".cfg" >> $HOME/.gitignore
+$ echo ".dot" >> $HOME/.gitignore
 ```
 
 **define the alias in the current shell scope:**
 ```
-$ alias cfg='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+$ alias dot='git --git-dir=$HOME/.dot --work-tree=$HOME'
 ```
 
 **checkout the content from the bare repository:**
 ```
-$ cfg checkout
+$ dot checkout
 ```
 
 Note that this might fail because of existing files. Backup and remove
@@ -374,24 +382,15 @@ the conflicting files and run the command again.
 
 **set the `showUntrackedFiles` flag to `no`:**
 ```
-$ cfg config --local status.showUntrackedFiles no
+$ dot config --local status.showUntrackedFiles no
 ```
 
+### Global configuration files
 
-### Pacman
-
-**edit `pacman.conf`:**
-
-Example (partial) of `/etc/pacman.conf`:
-```
-# Misc options
-#UseSyslog
-Color
-#NoProgressBar
-CheckSpace
-VerbosePkgLists
-ParallelDownloads = 5
-```
+Some files are manually tracked in [.config/etcs](.config/etcs)
+directory. A special git hook warns of differences between these copies
+and their originals (usually in `/etc`). Be carefull when updating or
+copying them.
 
 ### AUR helper
  
@@ -409,117 +408,6 @@ $ cd paru
 ```
 $ makepkg -si
 ```
-
-### Laptop configuration
-
-#### Charge thresholds
-
-**install `acpi_call`:**
-```
-$ doas pacman -S acpi_call
-```
-
-**install `tlp`:**
-```
-$ doas pacman -S tlp
-```
-
-**edit `tlp.conf`:**
-
-Example (partial) of `/etc/tlp.conf`:
-```
-START_CHARGE_THRESH_BAT0=67
-STOP_CHARGE_THRESH_BAT0=100
-```
-
-**enable and start `tlp.service`:**
-```
-$ doas systemctl enable tlp.service
-$ doas systemctl start tlp.service
-```
-
-#### Fan control
-
-**install `thinkfan`:**
-```
-$ paru -S thinkfan
-```
-
-**edit `thinkfan.conf`:** 
-
-Example of `/etc/thinkfan.conf`:
-```
-sensors:
-  - hwmon: /sys/devices/virtual/thermal/thermal_zone0/temp
-fans:
-  - tpacpi: /proc/acpi/ibm/fan
-levels:
-  - [0, 0, 60]
-  - [1, 53, 65]
-  - [2, 55, 66]
-  - [3, 57, 68]
-  - [4, 61, 70]
-  - [5, 64, 71]
-  - [7, 68, 32767]
-  - ["level full-speed", 68, 32767]
-```
-
-#### Hibernation
-
-**edit boot entry:**
-
-*See (17.3) and `resume=UUID=<UUID>`.*
-
-**edit `mkinitcpio.conf`:**
-
-Example (partial) of `/etc/mkinitcpio.conf`:
-```
-HOOKS=(base udev resume autodetect modconf block filesystems keyboard fsck)
-```
-
-**remake the initial ramdisk environment:**
-```
-$ doas mkinitcpio -p linux
-```
-
-#### Auto-hibernate
-
-This repo includes a script and a systemd timer for checking
-battery levels and auto-hibernating.
-
-- [systemd user services directory](.config/systemd/user)
-- [mlow_bat script](.local/bin/mlow_bat)
-this is now better
-
-**enable and start `low_bat.timer`:**
-```
-$ systemctl --user enable low_bat.timer
-$ systemctl --user start low_bat.timer
-```
-
-### Kernel
-
-**add the `i915` module to kernel:**
-
-Example (partial) of `/etc/mkinitcpio.conf`:
-```
-MODULES=(i915)
-```
-
-**enable `lz4` kernel compression:**
-
-Example (partial) of `/etc/mkinitcpio.conf`:
-```
-COMPRESSION=lz4
-```
-
-**remake the initial ramdisk environment:**
-```
-$ doas mkinitcpio -p linux
-```
-
-A copy of `mkinitcpio.conf` is manually tracked
-(here)[.config/etcs/mkinitcpio.conf], in this repo.
 
 ### Packages
 
@@ -580,7 +468,7 @@ alacritty
 #### Editor
 
 ```
-vim
+neovim
 ```
 
 #### File manager
@@ -592,8 +480,12 @@ nnn
 #### Terminal utilities
 
 ```
+opendoas
+tmux
 fzy
 jq
+wget
+htop
 ```
 
 #### Archive
@@ -622,6 +514,8 @@ sway
 
 ```
 wl-clipboard
+xdg-user-dirs
+light
 ```
 
 #### Audio
@@ -660,8 +554,8 @@ npm
 deno
 ```
 
-Setting up a webdev environment is documented in a private repo
-((wwws)[https://github.com/mknurs/wwws]).
+Setting up a webdev environment is documented in a private repo:
+[wwws](https://github.com/mknurs/wwws).
 
 #### Firewall
 
@@ -674,6 +568,7 @@ ufw
 ```
 pandoc
 texlive-core
+libreoffice-fresh-sl
 ```
 
 #### Printing and scanning
@@ -688,4 +583,12 @@ sane-airscan
 ghostscript
 
 cups-xerox-b2xx (aur)
+```
+
+#### Fonts
+
+```
+ttf-dejavu
+ttf-liberation
+gnu-free-fonts
 ```
