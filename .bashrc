@@ -5,67 +5,51 @@
 # if not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+shopt -s checkwinsize
+
 # auto vi mode
 set -o vi
 
-# update window
-shopt -s checkwinsize
+# prompt and title
+PS1="\001$(tput bold)$(tput setaf 5)\002${PS1}\001$(tput sgr0)\002"
 
-# colors
-bold="\[\e[1m\]"
-f01="\[\e[31m\]"
-f02="\[\e[32m\]"
-f03="\[\e[33m\]"
-f04="\[\e[34m\]"
-esc="\[\e[0m\]"
+case ${TERM} in
+  alacritty*)
+    PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
 
-# prompt
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
-then
-  PS1="${bold}${f04}[\u@\h \W]\$${esc} "
-else
-  PS1="${bold}${f02}[\u@\h \W]\$${esc} "
-fi
+    ;;
+esac
 
 ########################################################################
-# alias
+# commands and alias
 ########################################################################
-# base
-alias ls="ls -lah --color=auto"
+# source
 alias src="exec "$BASH""
+
+# ls
+eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
+alias ls="ls -lahF --group-directories-first --color=auto"
 
 # pacman
 if [ -n $(command -v pacman) ]
 then
-  if [ -n $(command -v doas) ]
-  then
-    alias pacu="doas pacman -Syyu --needed"
-    alias pacr="doas pacman -Rcns"
-    alias pacc="doas pacman -Scc"
-  else
-    alias pacu="sudo pacman -Syyu --needed"
-    alias pacr="sudo pacman -Rcns"
-    alias pacc="sudo pacman -Scc"
-  fi
-  alias pacs="pacman -Ss"
-  alias pacq="pacman -Qs"
-  alias paci="pacman -Qii"
-  alias paco="pacman -Qdtt"
-  alias pace="pacman -Qqe"
+  pacman_cmd="pacman --config "$XDG_CONFIG_HOME/pacman/pacman.conf""
+  alias pacu="sudo $pacman_cmd -Syyu --needed"
+  alias pacr="sudo $pacman_cmd -Rcns"
+  alias pacc="sudo $pacman_cmd -Scc"
+  alias pacs="$pacman_cmd -Ss"
+  alias pacq="$pacman_cmd -Qs"
+  alias paci="$pacman_cmd -Qii"
+  alias paco="$pacman_cmd -Qdtt"
+  alias pace="$pacman_cmd -Qqe"
 fi
 
-[ -n $(command -v nvim) ] && alias v="nvim"
-[ -n $(command -v nnn) ] && alias n="nnn"
-[ -n $(command -v tmux) ] && alias t="tmux"
-
-# repo
-if [ -n $DOT_GIT_DIR ]
+if [ -n $(command -v nvim) ]
 then
-  alias dot="/usr/bin/git --git-dir=${DOT_GIT_DIR} --work-tree=${DOT_WORK_TREE}"
-  alias dots="dot status"
-  alias dota="dot add"
-  alias dotc="dot commit"
+  alias v="nvim"
+  alias n="nvim"
 fi
+[ -n $(command -v tmux) ] && alias t="tmux"
 
 # git
 if [ -n $(command -v git) ]
@@ -73,3 +57,15 @@ then
   alias ga='git add'
   alias gc='git commit'
 fi
+
+# repo
+if [ -n $DOT_GIT_DIR ]
+then
+  alias dot="$DOTS_GIT_CMD"
+  alias dots="dot status"
+  alias dota="dot add"
+  alias dotc="dot commit"
+fi
+
+# explorer
+alias e=". $HOME/bin/fzy_cd.sh"
