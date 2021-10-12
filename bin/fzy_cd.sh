@@ -8,7 +8,7 @@ clear
 printf "%s\n" "$PWD"
 #echo $(basename "$0")
 disable=SC2012
-sel="$(ls -lahF --group-directories-first --color=auto | tail +3 | fzy -l $lines | tr -s " " | cut -d" " -f9-)"
+sel="$(ls -1ahF --group-directories-first --color=auto | tail +2 | fzy -l $lines)"
 if [ -d "$sel" ]
 then
   cd "$sel" || exit
