@@ -9,7 +9,7 @@ set $down j
 set $up k
 set $right l
 
-set $term alacritty --working-directory "$(sway_cwd.sh)"
+set $term alacritty --working-directory "$(sway_cwd.sh Alacritty)"
 set $browser firefox
 set $explorer $term -e nnn "$(sway_cwd.sh)"
 set $editor $term -e nvim
@@ -39,8 +39,7 @@ bindsym $mod+minus splitt
 # new window
 bindsym $mod+Return exec $term
 bindsym $mod+w exec $browser
-bindsym $mod+e exec $explorer
-bindsym $mod+r exec $editor
+bindsym $mod+e exec $editor
 bindsym $mod+t exec alacritty
 # move focus
 bindsym $mod+Up focus up
@@ -130,8 +129,7 @@ bindsym Print exec grim $(xdg-user-dir PICTURES)/screenshots/$(date +'%s_grim.pn
 ########################################################################
 # menu bindings
 ########################################################################
-for_window [app_id="^menu"] floating enable, sticky enable, resize set 30 ppt 30 ppt
-for_window [app_id="^l_menu"] floating enable, sticky enable, resize set 50 ppt 30 ppt
+for_window [app_id="^menu"] floating enable, sticky enable, resize set 20 ppt 20 ppt
 # logout
 bindsym $mod+Escape exec $term --class=menu -e ~/bin/sway_logout.sh
 # window focus
@@ -158,13 +156,14 @@ font DejaVu Sans Mono 10
 
 # wallpaper
 output "*" bg ~/doc/wallpaper.png fill
+# output "*" bg #333333 solid_color
 
 ########################################################################
 # status bar
 ########################################################################
 bar {
   position top
-  status_command while ~/bin/swaybar_status.sh; do sleep 1; done
+  status_command while ~/bin/swaybar_status.sh; do sleep 15; done
 
 	pango_markup enabled
 
