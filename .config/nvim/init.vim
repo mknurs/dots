@@ -196,8 +196,6 @@ set cc=72
 " laststatus, ls: 0, 1 or 2; when to use a status line for the last window
 set ls=2
 " statusline, stl: alternate format to be used for a status line
-" let g:word_count=wordcount().words
-" let g:char_count=wordcount().chars
 function WordCount()
   if has_key(wordcount(),'visual_words')
     let g:word_count=wordcount().visual_words."/".wordcount().words
@@ -724,7 +722,7 @@ set noai
 " eventignore, ei: list of autocommand events which are to be ignored
 " set ei=
 " loadplugins, lpl: load plugin scripts when starting up
-set nolpl
+" set nolpl
 " exrc, ex: enable reading .vimrc/.exrc/.gvimrc in the current directory
 " set noex
 " secure: safer working with script files in the current directory
@@ -770,28 +768,27 @@ endif
 
 call plug#begin()
   Plug 'sheerun/vim-polyglot'
-  Plug 'mcchrish/nnn.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" leader
+" leader and keys
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <Space> <Nop>
+nnoremap <space> <Nop>
 let mapleader=" "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nnn.vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>n :call nnn#pick(".", { "edit": "vs" })<CR>
-" Opens the nnn window in a split
-"let g:nnn#layout = "vnew"
 
-" Open nnn instead of netrw when opening a directory.
-let g:nnn#replace_netrw = 1
-" nnoremap <leader>n :NnnPicker %:p:h<CR>
-"let g:nnn#action
+" unset the last search pattern by hitting return
+nnoremap <silent> <cr> :noh<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" netrw
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 1
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " misc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " fix drawing when launched as initial command in alacritty
-autocmd VimEnter * :sleep 5m
+" autocmd VimEnter * :sleep 1m
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
