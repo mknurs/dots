@@ -28,7 +28,7 @@ alias src="exec "$BASH""
 
 # ls
 eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
-alias ls="ls -lahF --group-directories-first --color=auto"
+alias l="ls -lahF --group-directories-first --color=auto"
 
 # pacman
 if [ -n $(command -v pacman) ]

@@ -36,9 +36,10 @@ fi
 # git dot track
 export DOTS_GIT_DIR="$HOME/.dot"
 export DOTS_WORK_TREE="$HOME"
-export DOTS_PKGS_FILE="$XDG_CONFIG_HOME/pkgs"
+export DOTS_PKGS_LIST="$XDG_CONFIG_HOME/pkgs_list"
+export DOTS_FILE_LIST="$XDG_CONFIG_HOME/file_list"
+export DOTS_ETCS_DIR="$XDG_CONFIG_HOME/etcs"
 export DOTS_GIT_CMD="git --git-dir=$DOTS_GIT_DIR --work-tree=$DOTS_WORK_TREE"
-export DOTS_PKGS_CMD="pacman -Qqe > $DOTS_PKGS_FILE"
 
 # fff
 # if [ -n $(command -v fff) ]
