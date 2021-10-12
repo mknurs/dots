@@ -1,0 +1,5 @@
+/etc/mkinitcpio.conf
+/etc/udev/rules.d/99-lowbat.rules
+/boot/loader/loader.conf
+/boot/loader/entries/arch.conf
+/boot/loader/entries/fall.conf
