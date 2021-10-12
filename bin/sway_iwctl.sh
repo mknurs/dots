@@ -6,11 +6,9 @@
 [ -n "$(command -v fzy)" ] || printf "fzy is a dependency!"
 [ -n "$(command -v sed)" ] || printf "sed is a dependency!"
 [ -n "$(command -v iwctl)" ] || printf "iwctl is a dependency!"
-[ -n "$(command -v tput)" ] || printf "tput is a dependency!"
 
-LINES="$(expr $(tput lines) - 2)"
+PROMPT="select: "
 STATION="wlan0"
-PROMPT="Select network:\n"
 # get list
 iwctl station $STATION scan
 
@@ -19,9 +17,7 @@ list=$(iwctl station wlan0 get-networks | tail +5 | sed 's/\x1b\[[0-9;]*m//g' | 
 # list=$(iwctl station wlan0 get-networks | tr -s "[:blank:]" | tr -d "*" | tail +5)
 
 # prompt and get selection
-printf "$PROMPT"
-sel=$(printf "$list" | fzy -l $LINES )
-echo $sel
+sel=$(printf "%s\n" $list | fzy -p "$PROMPT" )
 # action
 if [ -n "$sel" ]
 then
