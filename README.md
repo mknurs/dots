@@ -27,7 +27,7 @@ assumes each was typed executed and doesn't assume any others were.
 
 Modify the keyboard layout:
 ```
-(1) # loadkeys slovene
+(1.1) # loadkeys slovene
 ```
 
 ### Connecting to the internet and synchronizing clocks
@@ -356,8 +356,8 @@ which it does.
 
 ```
 $ cd
-$ git init --bare $HOME/.dot
-$ git --git-dir=$HOME/.dot/ --work-tree=$HOME config --local status.showUntrackedFiles no
+$ git init --bare $HOME/.dots
+$ git --git-dir=$HOME/.dots/ --work-tree=$HOME config --local status.showUntrackedFiles no
 ```
 
 ### Migrating on a fresh install
@@ -366,9 +366,9 @@ These steps pull the whole repo.
 
 ```
 $ cd
-$ git clone --bare https://github.com/mknurs/dots $HOME/.dot
-$ git --git-dir=$HOME/.dot --work-tree=$HOME config --local status.showUntrackedFiles no
-$ git --git-dir=$HOME/.dot --work-tree=$HOME checkout
+$ git clone --bare https://github.com/mknurs/dots $HOME/.dots
+$ git --git-dir=$HOME/.dots --work-tree=$HOME config --local status.showUntrackedFiles no
+$ git --git-dir=$HOME/.dots --work-tree=$HOME checkout
 ```
 
 Note that `git checkout` might fail because of existing files. Backup
@@ -383,18 +383,13 @@ would be the command:
 $ sudo pacman -Syu --needed - < $HOME/.config/pkgs_list
 ```
 
-A list of manually tracked global configuration files is stored in
-[.config/file_list](.config/file_list). The last tracked states of these
-files are stored in [.config/etcs/](.config/etcs/). Check and see which
-need to be manually set-up.
-
-A speciall git hook can be set-up to automatically warn of differencess
-between these files and the package list. Link
-[.local/bin/dots_check.sh](.local/bin/dots_check.sh) to the `pre-push`
+A speciall git hook can be set-up to automatically update and commit
+changes to the package list. Link
+[.local/bin/dots_update_package_list.sh](.local/bin/dots_update_package_list.sh) to the `pre-push`
 hook to run it at pushes.
 
 ```
-ln -s $HOME/.local/bin/dots_check.sh $HOME/.dots/hooks/pre-push
+ln $HOME/.local/bin/dots_update_package_list.sh $HOME/.dots/hooks/pre-push
 ```
 
 With the dotfiles, the aliases and variables in [.bashrc](.bashrc) and
@@ -410,13 +405,13 @@ A basic or essential list of dotfiles is kept in
 remote servers or computers that we access only through the console. The
 following commands will download (with `wget`) a script (also stored in
 this repo, see:
-[.local/bin/dots_sparse_checkout.sh](.local/bin/dots_sparse_checkout.sh)),
+[.local/bin/dots_setup_sparse_checkout.sh](.local/bin/dots_setup_sparse_checkout.sh)),
 run it to set up a sparse checkout.
 
 ```
-$ wget https://raw.githubusercontent.com/mknurs/dots/master/bin/dotfiles_sparse_checkout.sh
-$ chmod +x dotfiles_sparse_checkout.sh
-$ ./dotfiles_sparse_checkout
+$ wget https://raw.githubusercontent.com/mknurs/dots/master/bin/dots_setup_sparse_checkout.sh
+$ chmod +x dots_setup_sparse_checkout.sh
+$ ./dots_setup_sparse_checkout
 ```
 
 ## Packages
@@ -566,7 +561,6 @@ foomatic-db-nonfree-ppds
 foomatic-db-ppds
 sane-airscan
 ghostscript
-
 cups-xerox-b2xx (aur)
 ```
 
