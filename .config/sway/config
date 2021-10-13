@@ -11,7 +11,6 @@ set $right l
 
 set $term alacritty --working-directory "$(sway_cwd.sh Alacritty)"
 set $browser firefox
-set $explorer $term -e nnn "$(sway_cwd.sh)"
 set $editor $term -e nvim
 
 ########################################################################
@@ -131,13 +130,13 @@ bindsym Print exec grim $(xdg-user-dir PICTURES)/screenshots/$(date +'%s_grim.pn
 ########################################################################
 for_window [app_id="^menu"] floating enable, sticky enable, resize set 20 ppt 20 ppt
 # logout
-bindsym $mod+Escape exec $term --class=menu -e ~/bin/sway_logout.sh
+bindsym $mod+Escape exec $term --class=menu -e sway_logout.sh
 # window focus
-bindsym $mod+Tab exec $term --class=menu -e ~/bin/sway_focus.sh
+bindsym $mod+Tab exec $term --class=menu -e sway_focus.sh
 # desktop launcher
-bindsym $mod+space exec $term --class=menu -e ~/bin/sway_launch.sh
+bindsym $mod+space exec $term --class=menu -e sway_launch.sh
 # wifi connect
-bindsym $mod+x exec $term --class=menu -e ~/bin/sway_iwctl.sh
+bindsym $mod+x exec $term --class=menu -e sway_iwctl.sh
 # mount
 #bindsym $mod+y exec $term --class=mount -e ~/bin/mmount
 
@@ -155,7 +154,7 @@ client.urgent #ff5533 #ff5533 #333333 #ff5533 #ff5533
 font DejaVu Sans Mono 10
 
 # wallpaper
-output "*" bg ~/doc/wallpaper.png fill
+output "*" bg $XDG_CONFIG_HOME/sway/wallpaper.png fill
 # output "*" bg #333333 solid_color
 
 ########################################################################
@@ -163,7 +162,7 @@ output "*" bg ~/doc/wallpaper.png fill
 ########################################################################
 bar {
   position top
-  status_command while ~/bin/swaybar_status.sh; do sleep 15; done
+  status_command while swaybar_status.sh; do sleep 15; done
 
 	pango_markup enabled
 
