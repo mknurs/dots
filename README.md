@@ -390,6 +390,7 @@ hook to run it at pushes.
 
 ```
 ln $HOME/.local/bin/dots_update_package_list.sh $HOME/.dots/hooks/pre-push
+chmod +x $HOME/.dots/hooks/pre-push
 ```
 
 With the dotfiles, the aliases and variables in [.bashrc](.bashrc) and
