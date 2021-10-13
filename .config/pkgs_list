@@ -38,6 +38,7 @@ make
 man-db
 neovim
 nginx-mainline
+nnn
 nodejs
 npm
 ntfs-3g
