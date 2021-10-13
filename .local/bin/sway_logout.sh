@@ -1,10 +1,12 @@
 #!/bin/sh
 # A simple logout menu using fzy.
 
-command -v fzy > /dev/null || printf "fzy is a dependency!"
+[ -n "$(command -v fzy)" ] || printf "fzy is a dependency!\n"
+[ -n "$(command -v tput)" ] || printf "tput is a dependency!\n"
 
-PROMPT="select: "
-OPTIONS="\
+lines=$(($(tput lines) - 1))
+
+options="\
 Logout\n\
 Poweroff\n\
 Reboot\n\
@@ -12,7 +14,7 @@ Suspend\n\
 Hibernate\n\
 "
 
-cmd=$(printf "$OPTIONS" | fzy -p "$PROMPT" )
+cmd=$(printf "$options" | fzy -l "$lines")
 
 case $cmd in
   Logout)

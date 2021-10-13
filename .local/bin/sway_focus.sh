@@ -5,7 +5,7 @@
 [ -n "$(command -v fzy)" ] || printf "fzy is a dependency!\n"
 [ -n "$(command -v tput)" ] || printf "tput is a dependency!\n"
 
-lines=$(($(tput lines) - 2))
+lines=$(($(tput lines) - 1))
 
 # get list
 list="$(swaymsg -t get_tree | jq -r '.. | objects | select(.type=="con" and .name!=null) | (.id|tostring) + " " + .name')"

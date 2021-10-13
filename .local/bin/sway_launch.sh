@@ -4,8 +4,8 @@
 [ -n "$(command -v fzy)" ] || printf "fzy is a dependency!"
 [ -n "$TERM" ] || printf "TERM is not set!"
 
-PROMPT="select: "
-DIRS="\
+lines=$(($(tput lines) - 1))
+dirs="\
 /usr/share/applications/*.desktop \
 /usr/local/share/applications/*.desktop \
 ~/.local/share/applications/*.desktop\
@@ -13,23 +13,23 @@ DIRS="\
 
 get_app_list()
 {
-  FILES=$(grep -RLs "NoDisplay=true" $DIRS)
+  FILES=$(grep -RLs "NoDisplay=true" $dirs)
   list=$(grep -Poh -m 1 '(?<=^Name=).*' $FILES | sort | uniq)
 }
 
 get_file()
 {
   sel=$1
-  file=$(grep -ls "Name=$sel" $DIRS | head -1)
+  file=$(grep -ls "Name=$sel" $dirs | head -1)
 }
 
 # get list
 list=""
-get_app_list $DIRS
+get_app_list $dirs
 
 # prompt and get selection
 printf "$PROMPT"
-sel=$(printf "$list" | fzy -p "$PROMPT")
+sel=$(printf "$list" | fzy -l "$lines")
 if [ -n "$sel" ]
 then
   file=""
