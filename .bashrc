@@ -30,7 +30,7 @@ alias src="exec "$BASH""
 alias l="ls -lahF --group-directories-first --color=auto"
 
 # ls explorer
-alias e=". $HOME/bin/fzy_cd.sh"
+alias e=". fzy_cd.sh"
 
 # df
 alias d="df -h -t ext4"

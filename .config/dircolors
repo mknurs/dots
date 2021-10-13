@@ -1,4 +1,4 @@
-TERM alacritty*
+TERM *
 # Below are the color init strings for the basic file types.
 # One can use codes for 256 or more colors supported by modern terminals.
 # The default color codes use the capabilities of an 8 color terminal
@@ -11,6 +11,14 @@ TERM alacritty*
 # 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
 NORMAL 0 # no color code at all
 FILE 0 # regular file: use no color at all
-RESET 0 # reset to "normal" color
 DIR 01;35 # directory
+LINK 0 # regular file: use no color at all
+ORPHAN 0 # regular file: use no color at all
+MISSING 0 # regular file: use no color at all
+FIFO 0 # regular file: use no color at all
+SOCK 0 # regular file: use no color at all
+DOOR 0 # regular file: use no color at all
+BLK 0 # regular file: use no color at all
+CHR 0 # regular file: use no color at all
+EXEC 0 # regular file: use no color at all
 # # This is for files with execute permission:

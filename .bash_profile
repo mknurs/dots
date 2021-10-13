@@ -4,7 +4,7 @@
 
 # environment
 # path
-export PATH="${PATH}:$HOME/bin"
+export PATH="${PATH}:$HOME/.local/bin"
 # xdg
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -34,10 +34,9 @@ then
   export BROWSER="firefox"
 fi
 # git dot track
-export DOTS_GIT_DIR="$HOME/.dot"
+export DOTS_GIT_DIR="$HOME/.dots"
 export DOTS_WORK_TREE="$HOME"
 export DOTS_PKGS_LIST="$XDG_CONFIG_HOME/pkgs_list"
-export DOTS_FILE_LIST="$XDG_CONFIG_HOME/file_list"
 export DOTS_ETCS_DIR="$XDG_CONFIG_HOME/etcs"
 export DOTS_GIT_CMD="git --git-dir=$DOTS_GIT_DIR --work-tree=$DOTS_WORK_TREE"
 
@@ -51,5 +50,5 @@ eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
 if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ] && [ -n "$(command -v sway)" ]
 then
   # exec sway # 2> $HOME/.sway.log
-  exec dbus-run-session sway #2> $HOME/.sway.log
+  exec dbus-run-session sway 2> $HOME/.sway.log
 fi
