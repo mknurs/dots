@@ -10,6 +10,8 @@ internet, a local copy of this readme can be downloaded with `wget`:
 # wget https://raw.githubusercontent.com/mknurs/dots/master/README.md
 ```
 
+![Screenshot](.config/screenshot.png)
+
 ## Installation guide
 
 This section covers installing Arch Linux. The instructions somewhat
