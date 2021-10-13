@@ -11,7 +11,7 @@ shopt -s checkwinsize
 set -o vi
 
 # prompt and title
-PS1="\001$(tput bold)$(tput setaf 5)\002${PS1}\001$(tput sgr0)\002"
+PS1="\001$(tput bold)$(tput setaf 2)\002${PS1}\001$(tput sgr0)\002"
 
 case ${TERM} in
   alacritty*)
