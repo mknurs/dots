@@ -3,77 +3,69 @@
 This repo contains the tracked dotfiles and keeps a list of packages and
 configuration steps to reproduce my current setup on a Thinkpad x230.
 
-The first part of this readme – numbered commands, from **(1)** to
-**(19.1)** – somewhat follows the structure of the ArchWiki
-[Installation
-guide](https://wiki.archlinux.org/title/installation_guide). The second
-part, or the rest, documents the post-installation steps that we've
-taken and want to retake.
-
-Booting from a live USB copy of Arch Linux with a connection to the
+When booting from a live USB copy of Arch Linux with a connection to the
 internet, a local copy of this readme can be downloaded with `wget`:
+
 ```
 # wget https://raw.githubusercontent.com/mknurs/dots/master/README.md
 ```
 
-Instructions and commands are in no way hardware or distribution
-agnostic. Do not copy without adapting the commands to your system and
-preferences.
+## Installation guide
 
-## Pre-installation
+This section covers installing Arch Linux. The instructions somewhat
+follow the structure of the ArchWiki [Installation
+guide](https://wiki.archlinux.org/title/installation_guide) which should
+be the main reference when installing Arch. Instructions and commands in
+this guide are in no way hardware of software agnostic. Do not follow
+them without adapting the commands to your system and preferences.
 
-### Set the keyboard layout.
+This guide assumes a successfull boot to a live usb. It assumes a UEFI
+system. Each and every command is numbered and listed, this guide
+assumes each was typed executed and doesn't assume any others were.
 
-**(1) modify the keyboard layout:**
+### Setting up the keyboard layout
+
+Modify the keyboard layout:
 ```
-# loadkeys slovene
-```
-
-### Connect to the internet
-
-**(2) scan for networks:**
-```
-# iwctl station wlan0 scan
-```
-
-**(2.1) list all available networks:**
-```
-# iwctl station wlan0 get-networks
+(1) # loadkeys slovene
 ```
 
-**(2.2) connect to a network:**
+### Connecting to the internet and synchronizing clocks
+
+List available stations:
 ```
-# iwctl station wlan0 connect <SSID>
+(2.1) # iwctl station list
+```
+Scan for networks:
+```
+(2.2) # iwctl station <STATION> scan
+```
+List available networks:
+```
+(2.3) # iwctl station <STATION> get-networks
+```
+Connect to a network:
+```
+(2.4) # iwctl station <STATION> connect <SSID>
+```
+Set time zone and update the system clock:
+```
+(3.1) # timedatectl set-timezone Europe/Ljubljana
+(3.2) # timedatectl set-ntp true
 ```
 
-### Set time zone and update the system clock
+### Partitioning the disks
 
-**(3) set timezone:**
+List block devices:
 ```
-# timedatectl set-timezone Europe/Ljubljana
+(4.1) # lsblk
 ```
-
-**(3.1) synchronize clock with NTP:**
+Use `fdisk` to partition the drive (usually `/dev/sda`):
 ```
-# timedatectl set-ntp true
-```
-
-### Partition the disks
-
-**(4) list block devices:**
-```
-# lsblk
+(4.2) # fdisk /dev/sda
 ```
 
-**(4.1) partition the drive (usually `/dev/sda`) with `fdisk`:**
-```
-# fdisk /dev/sda
-```
-
-- [Partitioning#Example layouts](https://wiki.archlinux.org/title/Partitioning#Example_layouts)
-- [Fdisk#Create_a_partition_table_and_partitions](https://wiki.archlinux.org/title/Fdisk#Create_a_partition_table_and_partitions)
-
-Personal (usual) setup (UEFI with GPT and a separate `/home` partition):
+Personal usual setup (UEFI with GPT and a separate `/home` partition):
 
 mount point | partition   | partition type    | size
 ------------|-------------|-------------------|-------------------
@@ -82,346 +74,363 @@ mount point | partition   | partition type    | size
 `/mnt`      | `/dev/sda3` | Linux x86-64 `23` | `+30G`
 `/mnt/home` | `/dev/sda4` | Linux x86-64 `23` | remainder of disk
 
-### Format the partitions
+### Formatting the partitions and initializing swap
 
-**(5) format the `boot` partition to `fat32`:**
+Format the `boot` partition to `fat32`:
 ```
-# mkfs.vfat -n boot /dev/sda1
+(5.1) # mkfs.vfat -n boot /dev/sda1
 ```
-
-**(5.1) initialize the `swap` partition:**
+Format the `home` and `root` partitions to `ext4`:
 ```
-# mkswap -L swap /dev/sda2
+(5.2) # mkfs.ext4 -L arch /dev/sda3
+(5.3) # mkfs.ext4 -L home /dev/sda4
 ```
-
-**(5.2) format the `home` and `root` partitions to `ext4`:**
+Initialize the `swap` partition:
 ```
-# mkfs.ext4 -L arch /dev/sda3
-# mkfs.ext4 -L home /dev/sda4
+(5.4) # mkswap -L swap /dev/sda2
 ```
 
-### Mount the file systems
+### Mounting the file systems and enabling swap
 
-**(6) mount the `root` volume to `/mnt`:**
+Mount the `root` volume to `/mnt`:
 ```
-# mount /dev/disk/by-label/arch /mnt
+(6.1) # mount /dev/disk/by-label/arch /mnt
 ```
-
-**(6.1) create remaining mount points:**
+Create remaining mount points (directories):
 ```
-# mkdir /mnt/boot /mnt/home
+(6.2) # mkdir /mnt/boot /mnt/home
 ```
-
-**(6.2) mount the `boot` and `home` volumes:**
+Mount the `boot` and `home` volumes:
 ```
-# mount /dev/disk/by-label/boot /mnt/boot
-# mount /dev/disk/by-label/home /mnt/home
+(6.3) # mount /dev/disk/by-label/boot /mnt/boot
+(6.4) # mount /dev/disk/by-label/home /mnt/home
 ```
-
-**(6.3) enable swap:**
+Enable swap:
 ```
-# swapon /dev/disk/by-label/swap
+(6.5) # swapon /dev/disk/by-label/swap
 ```
 
-## Installation
+### Installing base packages
 
-**(7) install essential packages:**
+Install essential packages:
 ```
-# pacstrap /mnt base linux linux-firmware
-```
-
-## Configure the system
-
-### Fstab
-
-**(8) generate an `fstab` file:**
-```
-# genfstab -U /mnt >> /mnt/etc/fstab
+(7.1) # pacstrap /mnt base linux linux-firmware base-devel intel-ucode iwd git neovim
 ```
 
-### Chroot
+Note that we've also installed the microcode, networking, git and text editor
+packages, which are not "essential" in the general sense.
 
-**(9) change root into the new system:**
-```
-# arch-chroot /mnt
-```
+### Generating fstab
 
-### Time zone
-
-**(9) set the time zone:**
+Generate an `fstab` file:
 ```
-# ln -sf /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
+(8.1) # genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-**(9.1) run hwclock to generate `/etc/adjtime`:**
+### Chrooting
+
+Change root into the new system:**
 ```
-# hwclock -w
+(9.1) # arch-chroot /mnt
 ```
 
-### Localization
+### Configuring time and locales
 
-**(11) edit `/etc/locale.gen` and uncomment needed locales:**
+Set the time zone:
 ```
-# sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
-# sed -i 's/^#sl_SI.UTF-8/sl_SI.UTF-8/g' /etc/locale.gen
+(10.1) # ln -sf /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
 ```
+Sync the hardware clock:
+```
+(11.1) # hwclock -w
+```
+Edit `locale.gen`:
+```
+(12.1) # nvim /etc/locale.gen
+```
+> ```
+> sl_SI.UTF-8 UTF-8
+> en_US.UTF-8 UTF-8
+> ```
+Generate the locales:
+```
+(12.2) # locale-gen
+```
+Edit `locale.conf`:
+```
+(13.1) # nvim /etc/locale.conf
+```
+> ```
+> LANG=sl_SI.UTF-8
+> LC_MESSAGES=en_US.UTF-8
+> ```
+Edit `vconsole.conf`:
+```
+(14.1) # nvim /etc/vconsole.conf
+```
+> ```
+> KEYMAP=slovene
+> FONT=lat2-16
+> ```
 
-**(11.1) generate the locales:**
-```
-# locale-gen
-```
+### Configuring networking
 
-**(11.2) create the `locale.conf` file and set the variables
-accordingly:**
+Edit `hostname`:
 ```
-# echo "LANG=sl_SI-UTF-8 >> /etc/locale.conf
-# echo "LC_MESSAGES=en_US-UTF-8 >> /etc/locale.conf
+(15.1) # nvim /etc/hostname
 ```
+> ```
+> arch
+> ```
 
-**(11.3) create the `vconsole.conf` file to make the
-keyboard layout changes persistent:**
+Edit `hosts`:
 ```
-# echo "KEYMAP=slovene" >> /etc/vconsole.conf
-# echo "FONT=lat2-16" >> /etc/vconsole.conf
-# echo "FONT_MAP=8859-2" >> /etc/vconsole.conf
+(16.1) # nvim /etc/hosts
 ```
+> ```
+> 127.0.0.1        localhost
+> ::1              localhost
+> 127.0.1.1        arch
+> ```
 
-### Network configuration
+### Configuring users
 
-**(12) create the `hostname` file:**
+Set the root password:
 ```
-# echo "x230" >> /etc/hostname
-```
-
-**(12.1) add entries to `hosts`:**
-```
-# echo -e "127.0.0.1\tlocalhost >> /etc/hosts
-# echo -e "::1\tlocalhost >> /etc/hosts
-```
-
-### Root password
-
-**(13) set the root password:**
-```
-# passwd
-```
-
-### Regular user
-
-**(14) create a regular user and add them to the wheel
-group:**
-```
-# useradd -mG wheel <USERNAME>
-```
-
-**(14.1) set the regular user password:**
-```
-# passwd <USERNAME>
-```
-
-### Microcode
-
-**(15) install the microcode package.**
-```
-# pacman -S intel-ucode
+(17.1) # passwd
 ```
 
-### Editor
-
-**(16) install a text editor.**
+Create a regular user and add them to the wheel and video group:
 ```
-# pacman -S neovim
+(18.1) # useradd -mG wheel,video <USERNAME>
 ```
 
-### Boot loader
-
-**(17) install boot loader packages:**
+Set the regular user password:
 ```
-# pacman -S efibootmgr
+(18.2) # passwd <USERNAME>
 ```
 
-**(17.1) install `systemd-boot`:**
+Edit `visudo`:
 ```
-# bootctl --path=/boot install
+(18.3) # EDITOR=nvim visudo
+```
+> ```
+> root ALL=(ALL) ALL
+> %wheel ALL=(ALL) ALL
+> @includedir /etc/sudoers.d
+> ```
+
+### Configuring the boot loader
+
+Set-up `systemd-boot`:
+```
+(19.1) # bootctl --path=/boot install
+```
+Edit `loader.conf`:
+```
+(19.2) # nvim /boot/loader/loader.conf
+```
+> ```
+> default arch.conf
+> ```
+Edit `arch.conf`:
+```
+(19.3) # nvim /boot/loader/entries/arch.conf
+```
+> ```
+> title Arch Linux
+> linux /vmlinuz-linux
+> initrd /intel-ucode.img
+> initrd /initramfs-linux.img
+> options root=/dev/sda3 rw resume=/dev/sda2
+> options nowatchdog mitigations=off
+> options quiet loglevel=2 i915.fastboot=1
+> options vt.default_red=0x33,0xff,0x61,0xff,0x33,0xd4,0xb3,0xa7,0x77,0xff,0x95,0xff,0x6a,0xe6,0xd1,0xe5
+> options vt.default_grn=0x33,0x55,0xff,0xf2,0x5c,0x8c,0xd7,0xa7,0x77,0x8b,0xff,0x8d,0x91,0xb7,0xe8,0xe5
+> options vt.default_blu=0x33,0x33,0xb0,0xb1,0xff,0xb7,0xff,0xa7,0x77,0x6a,0xcf,0xd0,0xff,0xd4,0xff,0xe5
+> ```
+Edit `fall.conf`:
+```
+(19.4) # nvim /boot/loader/entries/fall.conf
+```
+> ```
+> title Arch Linux (fallback)
+> linux /vmlinuz-linux
+> initrd /initramfs-linux-fallback.img
+> options root=/dev/sda3 rw
+> ```
+
+Note that since these files should be set-up and working at install and
+before the first boot, they're not tracked anywhere but here, inline.
+The main bootloader entry (`arch.conf`) has some kernel options to speed
+up the boot time and change the console colors. Note also that the
+option `resume=/dev/sda2` is neccessary for hibernation, see also:
+*(20.2)*.
+
+### Configuring the kernel
+
+Since this should also only be done once and for all the configuration
+file is included here and not as a standalone tracked file in the repo.
+
+Edit `mkinitcpio.conf`:
+```
+(20.1) # nvim /etc/mkinitcpio.conf
+```
+> ```
+> MODULES=(i915)
+> BINARIES=()
+> FILES=()
+> HOOKS=(base systemd autodetect block fsck filesystems)
+> COMPRESSION="lz4"
+> ```
+Generate the kernel:
+```
+(20.2) # mkinitcpio -p linux
+```
+Note the `systemd` hook; it is needed for, among other things,
+hibernation and resuming from disk. See also *(19.3)*.
+
+### Configuring auto-hibernate
+
+A udev rule is used for hibernate-on-low-battery trigger. The kernel
+hooks and boot options also need to be set up correctly, see *(19.3)*
+and *(20.2)*.
+
+Edit `99-lowbat.rules`:
+```
+(21.1) # nvim /etc/udev/rules.d/99-lowbat.rules
 ```
 
-**(17.2) set-up `loader.conf`:**
+### Configuring an AUR helper
 
-Example of `/boot/loader/loader.conf`:
+This step is optional for general set-ups. The `base-devel` package
+group is needed for this, see *(7.1)*.
+
+Clone the `paru` package from the AUR:
 ```
-timeout 3
-console-mode auto
+(22.1) # git clone https://aur.archlinux.org/paru.git
 ```
-
-**(17.3) set-up `<ENTRY>.conf`:**
-
-Example of `/boot/loader/entries/<ENTRY>.conf`:
+Move to the cloned directory:
 ```
-title	Arch Linux
-linux /vmlinuz-linux
-initrd /intel-ucode.img
-initrd /initramfs-linux.img
-options root=UUID=<UUID> rw resume=UUID=<UUID> vt.default_red=0x33,0xff,0x61,0xff,0x33,0xd4,0xb3,0xa7,0x77,0xff,0x95,0xff,0x6a,0xe6,0xd1,0xe5 vt.default_grn=0x33,0x55,0xff,0xf2,0x5c,0x8c,0xd7,0xa7,0x77,0x8b,0xff,0xf8,0x91,0xb7,0xe8,0xe5 vt.default_blu=0x33,0x33,0xb0,0xb1,0xff,0xb7,0xff,0xa7,0x77,0x6a,0xcf,0xd0,0xff,0xd4,0xff,0xe5
+(22.2) # cd paru
 ```
-
-This file is not tracked anywhere but here, inline. The long options
-line (after `vt.default_red`) defines the tty colors and is unnecessary.
-
-### Networking software
-
-**(18) install the necessary networking packages:**
+Make package:
 ```
-# pacman -S iwd dhcpcd
+(22.3) # makepkg -si
 ```
 
-### Reboot
+### Rebooting
 
-**(19) exit chroot:**
+Exit chroot:
 ```
-# exit
+(23.1) # exit
 ```
-
-**(19.1) unmount /mnt:**
+Unmount `/mnt`:
 ```
-# umount -R /mnt
+(23.2) # umount -R /mnt
 ```
-
-**(19.2) reboot:**
+Reboot:
 ```
-# reboot
+(23.3) # reboot
 ```
 
-## Post-installation configuration
+### Booting for the first time
 
-At this point the base Arch install is done. The rest of this document
-contains some post-installation guides and documents the necessary
-configuration steps to reproduce my work environment and workflow
-configuration.
-
-### Base-devel
-
-**install the base-devel group packages:**
-```
-# pacman -S --needed base-devel
-```
-
-### Sudo and doas
-
-We keep `sudo` installed as it can be an unspecified dependency of AUR
-packages. Otherwise we use `doas` from the `opendoas` package.
-
-**edit sudo privileges:**
-```
-# visudo
-```
-
-Uncomment `%wheel ALL=(ALL) ALL` to allow members of the
-wheel group to execute any command.
-
-**install opendoas package:**
-```
-# pacman -S opendoas
-```
-
-**configure `doas.conf`:**
-```
-# echo "permit :wheel" >> /etc/doas.conf
-```
-
-### Networking
-
-**enable and start iwd:**
+Enable and start `iwd`:
 ```
 $ doas systemctl enable iwd.service
 $ doas systemctl start iwd.service
 ```
 
-**enable and start dhcpcd:**
+## Dotfiles
+
+This section coveres the initialization and maintainence of version
+controled [dotfiles](https://wiki.archlinux.org/title/Dotfiles) with
+`git`.
+
+### Starting from scratch
+
+This section should theoretically never have to be refered to again.
+Taking these steps would be relevant if this repo would yet not exist –
+which it does.
+
 ```
-$ doas systemctl enable dhcpcd.service
-$ doas systemctl start dhcpcd.service
+$ cd
+$ git init --bare $HOME/.dot
+$ git --git-dir=$HOME/.dot/ --work-tree=$HOME config --local status.showUntrackedFiles no
 ```
 
-**connect to wifi using `iwctl`:**
-```
-$ iwctl station wlan0 connect <SSID>
-```
+### Migrating on a fresh install
 
-### Dotfiles version control
+These steps pull the whole repo.
 
-- [The best way to store your dotfiles](https://www.atlassian.com/git/tutorials/dotfiles)
-- [How do I clone only a subdirectory of a Git repository?](https://stackoverflow.com/a/13738951)
-
-**install `git`:**
 ```
-$ doas pacman -S git
-```
-
-**clone the dotfiles repo into a bare repository:**
-```
+$ cd
 $ git clone --bare https://github.com/mknurs/dots $HOME/.dot
+$ git --git-dir=$HOME/.dot --work-tree=$HOME config --local status.showUntrackedFiles no
+$ git --git-dir=$HOME/.dot --work-tree=$HOME checkout
 ```
 
-**add repository directory to `.gitignore`:**
+Note that `git checkout` might fail because of existing files. Backup
+and remove the conflicting files and run that command again.
+
+There is a list of explicitly installed packages in
+[.config/pkgs_list](.config/pkgs_list). Go through the list manually.
+Automatically installing the whole list is not recommended, but this
+would be the command:
+
 ```
-$ echo ".dot" >> $HOME/.gitignore
+$ sudo pacman -Syu --needed - < $HOME/.config/pkgs_list
 ```
 
-**define the alias in the current shell scope:**
+A list of manually tracked global configuration files is stored in
+[.config/file_list](.config/file_list). The last tracked states of these
+files are stored in [.config/etcs/](.config/etcs/). Check and see which
+need to be manually set-up.
+
+A speciall git hook can be set-up to automatically warn of differencess
+between these files and the package list. Link
+[.local/bin/dots_check.sh](.local/bin/dots_check.sh) to the `pre-push`
+hook to run it at pushes.
+
 ```
-$ alias dot='git --git-dir=$HOME/.dot --work-tree=$HOME'
+ln -s $HOME/.local/bin/dots_check.sh $HOME/.dots/hooks/pre-push
 ```
 
-**checkout the content from the bare repository:**
+With the dotfiles, the aliases and variables in [.bashrc](.bashrc) and
+[.bash_profile](.bash_profile), with installing all the packages from
+[.config/pkgs_list](.config/pkgs_list) and updating the files listed in
+[.config/file_list](.config/file_list) the system should be identical to
+the one where the last push to this repo was made.
+
+### Sparse checkout
+
+A basic or essential list of dotfiles is kept in
+[.config/sparse_list](.config/sparse_list). These are to be used on
+remote servers or computers that we access only through the console. The
+following commands will download (with `wget`) a script (also stored in
+this repo, see:
+[.local/bin/dots_sparse_checkout.sh](.local/bin/dots_sparse_checkout.sh)),
+run it to set up a sparse checkout.
+
 ```
-$ dot checkout
+$ wget https://raw.githubusercontent.com/mknurs/dots/master/bin/dotfiles_sparse_checkout.sh
+$ chmod +x dotfiles_sparse_checkout.sh
+$ ./dotfiles_sparse_checkout
 ```
 
-Note that this might fail because of existing files. Backup and remove
-the conflicting files and run the command again.
+## Packages
 
-**set the `showUntrackedFiles` flag to `no`:**
-```
-$ dot config --local status.showUntrackedFiles no
-```
-
-### Global configuration files
-
-Some files are manually tracked in [.config/etcs](.config/etcs)
-directory. A special git hook warns of differences between these copies
-and their originals (usually in `/etc`). Be carefull when updating or
-copying them.
-
-### AUR helper
- 
-**clone the `paru` aur helper.**
-```
-$ git clone https://aur.archlinux.org/paru.git
-```
-
-**move to the cloned directory.**
-```
-$ cd paru
-```
-
-**make package:**
-```
-$ makepkg -si
-```
-
-### Packages
-
-#### Base and base-devel
+### Base and base-devel
 
 ```
 base
 linux
 linux-firmware
-efibootmgr
 intel-ucode
 ```
 
-#### Base-devel
+### Base-devel
 
 ```
 autoconf
@@ -450,52 +459,34 @@ texinfo
 which
 ```
 
-#### Laptop
+### Networking
 
 ```
-acpi_call
-tlp
-
-thinkfan (aur)
+iwd
+wget
+openssh
 ```
 
-#### Terminal
-
-```
-alacritty
-```
-
-#### Editor
+### Utilities
 
 ```
 neovim
-```
-
-#### File manager
-
-```
-nnn
-```
-
-#### Terminal utilities
-
-```
-opendoas
 tmux
-fzy
-jq
-wget
 htop
+paru
+man-db
+jq
+fzy
 ```
 
-#### Archive
+### Archiving
 
 ```
 zip
 unzip
 ```
 
-#### Mounting and file systems
+### Mounting and file systems
 
 ```
 udevil
@@ -504,21 +495,21 @@ curlftpfs
 ntfs-3g
 ```
 
-#### Sway
+### Desktop environment
 
 ```
 sway
+alacritty
 ```
 
-#### Wayland utilities
+### Desktop utilities
 
 ```
 wl-clipboard
-xdg-user-dirs
 light
 ```
 
-#### Audio
+### Audio
 
 ```
 pipewire
@@ -527,21 +518,21 @@ pipewire-pulse
 pamixer
 ```
 
-#### Web
+### Web
 
 ```
 firefox
 thunderbird
 ```
 
-#### Media
+### Media
 
 ```
-imv
 inkscape
+pqiv
 ```
 
-#### Web development
+### Web development
 
 ```
 nginx-mainline
@@ -557,13 +548,7 @@ deno
 Setting up a webdev environment is documented in a private repo:
 [wwws](https://github.com/mknurs/wwws).
 
-#### Firewall
-
-```
-ufw
-```
-
-#### Writing and editing
+### Writing and editing
 
 ```
 pandoc
@@ -571,7 +556,7 @@ texlive-core
 libreoffice-fresh-sl
 ```
 
-#### Printing and scanning
+### Printing and scanning
 
 ```
 cups
@@ -585,10 +570,14 @@ ghostscript
 cups-xerox-b2xx (aur)
 ```
 
-#### Fonts
+### Fonts
 
 ```
 ttf-dejavu
-ttf-liberation
-gnu-free-fonts
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
 ```
+
+## Scripts
