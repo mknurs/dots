@@ -27,8 +27,13 @@ esac
 alias src="exec "$BASH""
 
 # ls
-eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
 alias l="ls -lahF --group-directories-first --color=auto"
+
+# ls explorer
+alias e=". $HOME/bin/fzy_cd.sh"
+
+# df
+alias d="df -h -t ext4"
 
 # pacman
 if [ -n $(command -v pacman) ]
@@ -46,8 +51,8 @@ fi
 
 if [ -n $(command -v nvim) ]
 then
-  alias v="nvim"
   alias n="nvim"
+  alias N="sudo nvim"
 fi
 [ -n $(command -v tmux) ] && alias t="tmux"
 
@@ -67,5 +72,3 @@ then
   alias dotc="dot commit"
 fi
 
-# explorer
-alias e=". $HOME/bin/fzy_cd.sh"
