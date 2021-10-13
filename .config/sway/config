@@ -123,7 +123,7 @@ bindsym XF86AudioMute exec pamixer -t
 bindsym XF86AudioMicMute exec pamixer --default-source -t
 bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
-bindsym Print exec grim $(xdg-user-dir PICTURES)/screenshots/$(date +'%s_grim.png')
+bindsym Print exec grim $XDG_PICTURES_DIR/screenshots/$(date +'%F%s_grim.png')
 
 ########################################################################
 # menu bindings
