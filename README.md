@@ -303,6 +303,31 @@ Edit `99-lowbat.rules`:
 (21.1) # nvim /etc/udev/rules.d/99-lowbat.rules
 ```
 
+### Configuring auto-login
+
+Edit `override.conf`:
+```
+(22.1) # nvim /etc/systemd/system/getty@tty1.service.d/override.conf
+```
+> ```
+> [Service]
+> ExecStart=
+> ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin mkn --noclear %I $TERM
+> ```
+Edit `login.defs`:
+```
+(22.2) # nvim /etc/login.defs
+```
+> ```
+> ...
+> HUSHLOGIN_FILE .config/hushlogin
+> ...
+> ```
+Create `hushlogin`:
+```
+(22.3) # touch $HOME/.config/hushlogin
+```
+
 ### Configuring an AUR helper
 
 This step is optional for general set-ups. The `base-devel` package
@@ -310,30 +335,30 @@ group is needed for this, see *(7.1)*.
 
 Clone the `paru` package from the AUR:
 ```
-(22.1) # git clone https://aur.archlinux.org/paru.git
+(23.1) # git clone https://aur.archlinux.org/paru.git
 ```
 Move to the cloned directory:
 ```
-(22.2) # cd paru
+(23.2) # cd paru
 ```
 Make package:
 ```
-(22.3) # makepkg -si
+(23.3) # makepkg -si
 ```
 
 ### Rebooting
 
 Exit chroot:
 ```
-(23.1) # exit
+(24.1) # exit
 ```
 Unmount `/mnt`:
 ```
-(23.2) # umount -R /mnt
+(24.2) # umount -R /mnt
 ```
 Reboot:
 ```
-(23.3) # reboot
+(24.3) # reboot
 ```
 
 ### Booting for the first time
@@ -377,12 +402,12 @@ Note that `git checkout` might fail because of existing files. Backup
 and remove the conflicting files and run that command again.
 
 There is a list of explicitly installed packages in
-[.config/pkgs_list](.config/pkgs_list). Go through the list manually.
+[.config/package_list](.config/package_list). Go through the list manually.
 Automatically installing the whole list is not recommended, but this
 would be the command:
 
 ```
-$ sudo pacman -Syu --needed - < $HOME/.config/pkgs_list
+$ sudo pacman -Syu --needed - < $HOME/.config/package_list
 ```
 
 A speciall git hook can be set-up to automatically update and commit
@@ -397,7 +422,7 @@ chmod +x $HOME/.dots/hooks/pre-push
 
 With the dotfiles, the aliases and variables in [.bashrc](.bashrc) and
 [.bash_profile](.bash_profile), with installing all the packages from
-[.config/pkgs_list](.config/pkgs_list) and updating the files listed in
+[.config/package_list](.config/package_list) and updating the files listed in
 [.config/file_list](.config/file_list) the system should be identical to
 the one where the last push to this repo was made.
 
@@ -412,7 +437,7 @@ this repo, see:
 run it to set up a sparse checkout.
 
 ```
-$ wget https://raw.githubusercontent.com/mknurs/dots/master/bin/dots_setup_sparse_checkout.sh
+$ wget https://raw.githubusercontent.com/mknurs/dots/master/.local/bin/dots_setup_sparse_checkout.sh
 $ chmod +x dots_setup_sparse_checkout.sh
 $ ./dots_setup_sparse_checkout
 ```
