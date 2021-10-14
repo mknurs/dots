@@ -4,7 +4,6 @@ automake
 base
 bison
 cups
-cups-xerox-b2xx
 curlftpfs
 deno
 fakeroot
@@ -21,7 +20,6 @@ grim
 gutenprint
 htop
 inkscape
-intel-ucode
 iwd
 jq
 libreoffice-fresh-sl
@@ -41,7 +39,6 @@ npm
 ntfs-3g
 pamixer
 pandoc
-paru
 patch
 php7
 php7-fpm
