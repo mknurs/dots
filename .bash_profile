@@ -40,7 +40,10 @@ export DOTS_PKGS_LIST="$XDG_CONFIG_HOME/package_list"
 export DOTS_GIT_CMD="git --git-dir=$DOTS_GIT_DIR --work-tree=$DOTS_WORK_TREE"
 
 # dircolors
-eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
+if [ -f "$XDG_CONFIG_HOME/dircolors" ]
+then
+  eval "$(dircolors $XDG_CONFIG_HOME/dircolors)"
+fi
 
 # source `.bashrc` if it exists
 [ -f ~/.bashrc ] && . ~/.bashrc

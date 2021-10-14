@@ -28,6 +28,8 @@ alias src="exec "$BASH""
 
 # ls
 alias l="ls -lahF --group-directories-first --color=auto"
+alias l1="ls -1F --group-directories-first --color=auto"
+alias l1.="ls -1aF --group-directories-first --color=auto"
 
 # ls explorer
 alias e=". fzy_cd.sh"
