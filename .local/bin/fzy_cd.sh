@@ -20,7 +20,7 @@ then
     cd "$sel" || exit
     e
   else
-    "$EDITOR" "${sel%\*}" &&
+    "$EDITOR" "${sel%[\*@]}" &&
     e
   fi
 fi
