@@ -302,6 +302,9 @@ Edit `99-lowbat.rules`:
 ```
 (21.1) # nvim /etc/udev/rules.d/99-lowbat.rules
 ```
+> ```
+> SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="/usr/bin/systemctl hibernate"
+> ```
 
 ### Configuring auto-login
 
@@ -333,17 +336,21 @@ Create `hushlogin`:
 This step is optional for general set-ups. The `base-devel` package
 group is needed for this, see *(7.1)*.
 
+Change user:
+```
+(23.1) # su mkn
+```
 Clone the `paru` package from the AUR:
 ```
-(23.1) # git clone https://aur.archlinux.org/paru.git
+(23.2) $ git clone https://aur.archlinux.org/paru.git
 ```
 Move to the cloned directory:
 ```
-(23.2) # cd paru
+(23.3) $ cd paru
 ```
 Make package:
 ```
-(23.3) # makepkg -si
+(23.4) $ makepkg -si
 ```
 
 ### Rebooting
@@ -363,6 +370,7 @@ Reboot:
 
 ### Booting for the first time
 
+TODO: resolved, dhcp config
 Enable and start `iwd`:
 ```
 $ doas systemctl enable iwd.service
